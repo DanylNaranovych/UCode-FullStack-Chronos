@@ -1,0 +1,49 @@
+.container {
+  background-color: #222;
+  color: #fff;
+  padding: 20px;
+}
+
+.formWrapper {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  margin-bottom: 5px;
+}
+
+.input {
+  margin-bottom: 10px;
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #555;
+  padding: 8px;
+}
+
+.button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+  margin-top: 5px;
+}
+
+.toggleButton {
+  margin-top: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}

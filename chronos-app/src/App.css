@@ -1,0 +1,8 @@
+body {
+  background-color: #222;
+}
+
+.Calendar {
+  flex-grow: 1;
+  overflow-y: auto;
+}
