@@ -2,7 +2,10 @@ body {
   background-color: #222;
 }
 
-.Calendar {
-  flex-grow: 1;
-  overflow-y: auto;
+h1 {
+  color: white;
+}
+
+.Content {
+  display: flex;
 }

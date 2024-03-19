@@ -23,7 +23,7 @@ const getMonthName = (monthNumber) => {
 };
 
 const Calendar = () => {
-  const [currentView, setCurrentView] = useState("month"); // Добавляем состояние для текущего представления календаря
+  const [currentView, setCurrentView] = useState("month");
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const goToPrevious = () => {
