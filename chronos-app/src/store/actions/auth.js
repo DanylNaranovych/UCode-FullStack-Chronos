@@ -5,8 +5,6 @@ import axios from "axios";
 export const login = (login, password) => async (dispatch) => {
   try {
     const response = await AuthService.login(login, password);
-    console.log(response);
-    console.log(document.cookie);
     dispatch({ type: "SET_USER", payload: response.data.user });
     dispatch({ type: "SET_AUTH_STATUS", payload: true });
   } catch (error) {

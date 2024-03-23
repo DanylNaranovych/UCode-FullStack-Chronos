@@ -4,7 +4,7 @@ import fileUpload from "express-fileupload";
 import cookieParser from "cookie-parser";
 import router from "./routes/router.js";
 
-const port = 80;
+const port = 8000;
 const app = express();
 
 app.use(cookieParser());
@@ -13,7 +13,7 @@ app.use(fileUpload({}));
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "http://127.0.0.1:3000",
     credentials: true,
     methods: "GET, POST, PUT, PATCH, DELETE",
     allowedHeaders: "Content-Type, Authorization, Set-Cookie",

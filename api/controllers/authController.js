@@ -32,20 +32,13 @@ export default class authController {
           login: newUser.login,
         });
 
-        res.cookie("token", token, {
-          maxAge: 604800000,
-          httpOnly: true,
-          sameSite: "none",
-          domain: "localhost",
-          path: "/",
-        });
+        res.cookie("token", token);
 
         res.json({
           msg: "Success",
           user: {
             user_id: newUser.id,
             login: newUser.login,
-            token: token,
           },
         });
       }
