@@ -1,10 +1,11 @@
 import jsonwebtoken from "jsonwebtoken";
 import nodemailer from "nodemailer";
-import User from '../models/User.js';
-import config from "../config.json" assert { type: 'json' };
+import User from "../models/User.js";
+import config from "../config.json" assert { type: "json" };
 import hashPassword from "../utils/hashPassword.js";
 import TokenService from "../utils/tokenService.js";
 import dbService from "../utils/dbService.js";
+import Calendar from "../models/Calendar.js";
 
 export default class authController {
 
@@ -69,15 +70,25 @@ export default class authController {
 
             data.password = await hashPassword(data.password);
 
-            await userTable.create(data.login, data.full_name, data.email, data.password);
+            const userId = await userTable.create(data.login, data.full_name, data.email, data.password);
 
             const token = await TokenService.generate({email: req.body.email});
             const transporter = nodemailer.createTransport(config.nodemailer);
             await transporter.sendMail({
                 to: data.email,
-                subject: 'Registration on forum',
+                subject: 'Registration on calendar',
                 html: `Please click this email to confirm your email: <a href="http://127.0.0.1:8080/confirm-email/${token}">Click here</a>`,
             });
+
+            const calendarTable = new Calendar();
+            const calendarId = await calendarTable.create("Calendar1", "");
+
+            await calendarTable.saveUserCalendar(userId, calendarId, "admin");
+            res.status(200).json({
+                msg: "Success",
+                calendarId: calendarId
+            });
+
             res.status(200).send("Successful registration");
         } catch (err) {
             console.error(err);
