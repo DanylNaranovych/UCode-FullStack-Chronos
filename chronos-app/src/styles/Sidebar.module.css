@@ -1,0 +1,125 @@
+.sidebar {
+  background-color: #222;
+  color: #fff;
+  width: 250px;
+  padding: 20px;
+  box-sizing: border-box;
+  border: 2px solid #444;
+  border-radius: 10px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-profile {
+  margin-bottom: 20px;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.username {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.logoutButton,
+.createEventButton {
+  background-color: #555;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.logoutButton:hover,
+.createEventButton:hover {
+  background-color: #777;
+}
+
+.calendar-list,
+.category-list {
+  margin-bottom: 20px;
+}
+
+.category-list h3 {
+  margin-bottom: 10px;
+  font-size: 1.2em;
+  color: #fff;
+}
+
+.category-list ul {
+  padding: 0;
+  margin: 0;
+}
+
+.category-list li {
+  list-style: none;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.category-list li input[type="checkbox"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.category-list li input[type="checkbox"]:checked {
+  background-color: #fff;
+}
+
+.category-list li input[type="checkbox"]:checked::before {
+  content: "\2713";
+  font-size: 14px;
+  color: #222;
+  text-align: center;
+  line-height: 20px;
+  display: block;
+}
+
+.category-list li label {
+  color: #fff;
+  cursor: pointer;
+}
+
+h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.5em;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+}
+
+h3::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background-color: #fff;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin-bottom: 5px;
+}

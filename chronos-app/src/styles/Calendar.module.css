@@ -1,0 +1,92 @@
+.calendar {
+  width: 100%;
+  font-family: Arial, sans-serif;
+  border: 2px solid #333;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #222;
+  color: #fff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.heading {
+  text-align: center;
+  color: #ccc;
+  margin-bottom: 10px;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.button {
+  background-color: #172833;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
+  margin: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #121025;
+}
+
+.weekdays {
+  display: flex;
+  justify-content: space-between;
+  background-color: #444;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.weekdays div {
+  flex: 1;
+  text-align: center;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.days > div {
+  border: 1px solid #444;
+  border-radius: 5px;
+  padding: 10px;
+  text-align: right;
+}
+
+.days > div:hover {
+  background-color: #555;
+}
+
+.day {
+  height: 100px;
+}
+
+.oneday {
+  grid-column: span 7;
+}
+
+.hours {
+  margin-top: 150px;
+}
+
+.hour {
+  height: 100px;
+  line-height: 50px;
+  border-bottom: 1px solid #ccc;
+  padding-left: 10px;
+}
+
+.today {
+  background-color: #899b49;
+  color: #fff;
+}
