@@ -1,26 +1,38 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setUser } from "./store/actions/auth";
+import Cookies from "js-cookie";
 import Header from "./components/Header";
 import LoginForm from "./components/LoginForm";
-// import EventForm from "./components/EventForm";
 import Calendar from "./components/Calendar";
 import Sidebar from "./components/Sidebar";
-// import Event from "./components/Event";
-// import CalendarForm from "./components/CalendarForm";
-
 import "./App.css";
 
 function App() {
+  const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const isAuth = useSelector((state) => state.auth.isAuth);
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token) {
+      const userJSON = Cookies.get("user");
+      const user = JSON.parse(userJSON);
+      if (user) {
+        dispatch(setUser(user.user));
+        setIsLoggedIn(true);
+      }
+    }
+  }, [dispatch]);
 
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
   };
 
-  if (!isAuth) {
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
+
+  if (!isLoggedIn) {
     return <LoginForm onLoginSuccess={handleLoginSuccess} />;
   }
 
@@ -30,7 +42,7 @@ function App() {
         <div>
           <Header />
           <div className="Content">
-            <Sidebar />
+            <Sidebar onLogout={handleLogout} />
             <Calendar />
           </div>
         </div>

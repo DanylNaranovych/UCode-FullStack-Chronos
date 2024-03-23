@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import AuthService from "../services/authService.js";
+import { useDispatch, useSelector } from "react-redux";
 
 import styles from "../styles/Sidebar.module.css";
 
 import EventModalForm from "./ModalEventForm.jsx";
+import { logout } from "../store/actions/auth.js";
 
-const Sidebar = () => {
+const Sidebar = ({ onLogout }) => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleCreateEventClick = () => {
@@ -18,8 +21,8 @@ const Sidebar = () => {
 
   const handleLogout = async () => {
     try {
-      await AuthService.logout();
-      console.log("Вы успешно вышли из системы.");
+      await dispatch(logout());
+      onLogout();
     } catch (error) {
       console.error("Ошибка при выходе:", error);
     }
@@ -29,7 +32,11 @@ const Sidebar = () => {
     <div className={`${styles.sidebar} ${styles.close}`}>
       <div className={styles["user-profile"]}>
         <img src="avatar.jpg" alt="Avatar" className={styles.avatar} />
-        <span className={styles.username}>Login</span>
+        {user ? (
+          <div>{user.login}</div>
+        ) : (
+          <p>Пользователь не вошел в систему.</p>
+        )}
       </div>
 
       <button className={styles.logoutButton} onClick={handleLogout}>
