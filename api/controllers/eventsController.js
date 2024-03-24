@@ -133,10 +133,10 @@ export default class eventsController {
     }
   }
 
-  static async deleteEvent(req, res) {
-    try {
-      const { eventId } = req.params;
-      const { calendarId } = req.body;
+    static async deleteEvent(req, res) {
+        try {
+            const {eventId} = req.params;
+            const {calendarId} = req.body;
 
       const token = req.cookies.token;
       const { userId } = await TokenService.getData(token);
