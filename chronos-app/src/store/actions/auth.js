@@ -44,21 +44,3 @@ export const logout = () => async (dispatch) => {
     console.error("Logout error", error);
   }
 };
-
-export const sendResetLink = () => async (dispatch) => {
-  try {
-    await AuthService.sendResetLink();
-    dispatch({ type: "SET_MESSAGE", payload: "Success" });
-  } catch (error) {
-    dispatch({ type: "SET_MESSAGE", payload: "Error" });
-  }
-};
-
-export const resetPassword = (token, newPassword) => async (dispatch) => {
-  try {
-    await AuthService.resetPassword(token, newPassword);
-    dispatch({ type: "SET_MESSAGE", payload: "Success" });
-  } catch (error) {
-    dispatch({ type: "SET_MESSAGE", payload: "Error" });
-  }
-};

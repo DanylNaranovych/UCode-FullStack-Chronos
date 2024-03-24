@@ -1,6 +1,9 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "../styles/Calendar.module.css";
+import EventForm from "./EventForm";
+
+import { getEventsForCalendar } from "../store/actions/event";
 
 const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -22,9 +25,19 @@ const getMonthName = (monthNumber) => {
   return months[monthNumber];
 };
 
-const Calendar = () => {
+const Calendar = ({ selectedCalendar }) => {
+  const dispatch = useDispatch();
   const [currentView, setCurrentView] = useState("month");
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [isEventFormOpen, setIsEventFormOpen] = useState(false);
+  const [selectedDay, setSelectedDay] = useState(null);
+  const events = useSelector((state) => state.event.events.eventsArray);
+
+  useEffect(() => {
+    if (selectedCalendar) {
+      dispatch(getEventsForCalendar(selectedCalendar.id));
+    }
+  }, [selectedCalendar, dispatch]);
 
   const goToPrevious = () => {
     if (currentView === "month") {
@@ -91,6 +104,12 @@ const Calendar = () => {
   const renderDays = () => {
     const days = [];
     const today = new Date();
+
+    const openEventForm = (day) => {
+      setSelectedDay(day);
+      setIsEventFormOpen(true);
+    };
+
     if (currentView === "month") {
       const firstDayOfMonth = new Date(
         currentDate.getFullYear(),
@@ -129,12 +148,31 @@ const Calendar = () => {
           currentDate.getMonth() === today.getMonth() &&
           i === today.getDate();
 
+        const eventsForDay = events
+          ? events.filter((event) => {
+              const eventDate = new Date(event.start);
+              return (
+                eventDate.getDate() === i &&
+                eventDate.getMonth() === currentDate.getMonth() &&
+                eventDate.getFullYear() === currentDate.getFullYear()
+              );
+            })
+          : [];
+
+        const eventItems = eventsForDay.map((event) => (
+          <div key={event.eventId} className={styles.event}>
+            {event.name}
+          </div>
+        ));
+
         days.push(
           <div
             key={`current-${i}`}
             className={`${styles.day} ${isToday ? styles.today : ""}`}
+            onClick={() => openEventForm(i)}
           >
-            {i}
+            <div>{i}</div>
+            <div className={styles.eventContainer}>{eventItems}</div>
           </div>
         );
       }
@@ -192,6 +230,14 @@ const Calendar = () => {
 
   return (
     <div className={styles.calendar}>
+      <>
+        {isEventFormOpen && (
+          <EventForm
+            selectedDay={selectedDay}
+            onClose={() => setIsEventFormOpen(false)}
+          />
+        )}
+      </>
       <div className={styles.navigation}>
         <button className={styles.button} onClick={goToPrevious}>
           Prev

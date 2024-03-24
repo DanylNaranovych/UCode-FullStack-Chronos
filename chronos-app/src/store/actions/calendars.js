@@ -3,7 +3,8 @@ import CalendarsService from "../../services/calendarsService";
 export const getAllUserCalendars = () => async (dispatch) => {
   try {
     const response = await CalendarsService.getAllUserCalendars();
-    dispatch({ type: "GET_CALENDARS", payload: response.data.calendars });
+    dispatch({ type: "GET_CALENDARS", payload: response.data.calendarsArray });
+    return response;
   } catch (error) {
     console.error("Failed to retrieve calendars", error);
   }
@@ -15,7 +16,9 @@ export const createUserCalendar = (name, description) => async (dispatch) => {
       name,
       description
     );
-    dispatch({ type: "GET_CALENDARS", payload: response.data.calendars });
+    dispatch(getAllUserCalendars());
+    console.log(response);
+    // dispatch({ type: "GET_CALENDARS", payload: response.data.calendars });
   } catch (error) {
     console.error("Failed to create a calendar", error);
   }

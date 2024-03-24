@@ -1,15 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { getAllUserCalendars } from "../store/actions/calendars";
 import { useDispatch, useSelector } from "react-redux";
 
 import styles from "../styles/Sidebar.module.css";
 
 import EventModalForm from "./ModalEventForm.jsx";
+import CalendarModalForm from "./ModalCalendarForm.jsx";
+
 import { logout } from "../store/actions/auth.js";
 
-const Sidebar = ({ onLogout }) => {
+const Sidebar = ({ onLogout, onSelectCalendar }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+  const calendars = useSelector((state) => state.calendars.calendars);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    dispatch(getAllUserCalendars());
+    setIsLoading(false);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (calendars && calendars.length > 0) {
+      const firstCalendar = calendars[0];
+      onSelectCalendar(firstCalendar);
+    }
+  }, [calendars, onSelectCalendar]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   const handleCreateEventClick = () => {
     setIsModalOpen(true);
@@ -28,42 +50,32 @@ const Sidebar = ({ onLogout }) => {
     }
   };
 
+  const handleCreateCalendarClick = () => {
+    setIsCalendarModalOpen(true);
+  };
+
+  const handleCalendarSelect = (calendar) => {
+    onSelectCalendar(calendar);
+  };
+
   return (
     <div className={`${styles.sidebar} ${styles.close}`}>
       <div className={styles["user-profile"]}>
-        <img src="avatar.jpg" alt="Avatar" className={styles.avatar} />
-        {user ? (
-          <div>{user.login}</div>
-        ) : (
-          <p>Пользователь не вошел в систему.</p>
-        )}
+        <img src="default_avatar.png" alt="Avatar" className={styles.avatar} />
+        {user ? <div>{user.login}</div> : <p>Error.</p>}
       </div>
-
-      <button className={styles.logoutButton} onClick={handleLogout}>
-        Logout
-      </button>
-
-      <div className={styles["calendar-list"]}>
-        <h3>My Calendars</h3>
-        <ul>
-          <li>
-            <label>
-              <input type="checkbox" /> Calendar 1
-            </label>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox" /> Calendar 2
-            </label>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox" /> Calendar 3
-            </label>
-          </li>
-        </ul>
+      <div>
+        <button
+          className={styles.createEventButton}
+          onClick={handleCreateCalendarClick}
+        >
+          Create Calendar
+        </button>
+        <CalendarModalForm
+          isOpen={isCalendarModalOpen}
+          onClose={() => setIsCalendarModalOpen(false)}
+        />
       </div>
-
       <div>
         <button
           className={styles.createEventButton}
@@ -71,12 +83,34 @@ const Sidebar = ({ onLogout }) => {
         >
           Create Event
         </button>
-        <EventModalForm isOpen={isModalOpen} onClose={handleCloseModal} />
+        <EventModalForm
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onCreate={handleCreateEventClick}
+          calendars={calendars}
+        />
       </div>
 
+      {calendars &&
+        calendars.map((calendar) => (
+          <li key={calendar.id} onClick={() => handleCalendarSelect(calendar)}>
+            <label>
+              <input
+                type="radio"
+                name="calendar"
+                defaultChecked={
+                  calendars.indexOf(calendar) === 0 &&
+                  calendars.indexOf(calendar) === 0
+                }
+              />
+              {calendar.name}{" "}
+            </label>
+          </li>
+        ))}
+
       <div className={styles["category-list"]}>
-        <h3>Categories</h3>
         <ul>
+          <h3>Categories</h3>
           <li>
             <input type="checkbox" id="arrangements" />
             <label htmlFor="arrangements">Arrangements</label>
@@ -91,6 +125,9 @@ const Sidebar = ({ onLogout }) => {
           </li>
         </ul>
       </div>
+      <button className={styles.logoutButton} onClick={handleLogout}>
+        Logout
+      </button>
     </div>
   );
 };

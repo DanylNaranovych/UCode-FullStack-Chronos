@@ -11,6 +11,7 @@ import "./App.css";
 function App() {
   const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [selectedCalendar, setSelectedCalendar] = useState(null); // Добавьте состояние для выбранного календаря
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -32,6 +33,10 @@ function App() {
     setIsLoggedIn(false);
   };
 
+  const handleCalendarSelect = (calendar) => {
+    setSelectedCalendar(calendar);
+  };
+
   if (!isLoggedIn) {
     return <LoginForm onLoginSuccess={handleLoginSuccess} />;
   }
@@ -42,8 +47,11 @@ function App() {
         <div>
           <Header />
           <div className="Content">
-            <Sidebar onLogout={handleLogout} />
-            <Calendar />
+            <Sidebar
+              onLogout={handleLogout}
+              onSelectCalendar={handleCalendarSelect}
+            />
+            <Calendar selectedCalendar={selectedCalendar} />
           </div>
         </div>
       ) : (
