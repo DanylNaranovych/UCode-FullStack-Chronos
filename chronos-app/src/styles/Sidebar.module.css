@@ -110,7 +110,6 @@ h3::after {
   left: 0;
   width: 50px;
   height: 2px;
-  background-color: #fff;
 }
 
 ul {
@@ -121,4 +120,33 @@ ul {
 
 li {
   margin-bottom: 5px;
+}
+
+.calendarList {
+  list-style: none;
+  padding: 0;
+}
+
+.calendarListItem {
+  margin-bottom: 10px;
+}
+
+.calendarItem {
+  padding: 10px;
+  background-color: #333;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.calendarItem:hover {
+  background-color: #3b3838;
+}
+
+.selected {
+  background-color: #000000;
+}
+
+input[type="radio"] {
+  left: -999em;
+  position: absolute;
 }

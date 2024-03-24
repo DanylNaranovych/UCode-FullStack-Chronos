@@ -16,18 +16,12 @@ const Sidebar = ({ onLogout, onSelectCalendar }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedCalendar, setSelectedCalendar] = useState(null);
 
   useEffect(() => {
     dispatch(getAllUserCalendars());
     setIsLoading(false);
   }, [dispatch]);
-
-  useEffect(() => {
-    if (calendars && calendars.length > 0) {
-      const firstCalendar = calendars[0];
-      onSelectCalendar(firstCalendar);
-    }
-  }, [calendars, onSelectCalendar]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -55,6 +49,7 @@ const Sidebar = ({ onLogout, onSelectCalendar }) => {
   };
 
   const handleCalendarSelect = (calendar) => {
+    setSelectedCalendar(calendar);
     onSelectCalendar(calendar);
   };
 
@@ -91,22 +86,28 @@ const Sidebar = ({ onLogout, onSelectCalendar }) => {
         />
       </div>
 
-      {calendars &&
-        calendars.map((calendar) => (
-          <li key={calendar.id} onClick={() => handleCalendarSelect(calendar)}>
-            <label>
-              <input
-                type="radio"
-                name="calendar"
-                defaultChecked={
-                  calendars.indexOf(calendar) === 0 &&
-                  calendars.indexOf(calendar) === 0
-                }
-              />
-              {calendar.name}{" "}
-            </label>
-          </li>
-        ))}
+      <ul className={styles.calendarList}>
+        {calendars &&
+          calendars.map((calendar) => (
+            <li key={calendar.id} className={styles.calendarListItem}>
+              <div
+                className={`${styles.calendarItem} ${
+                  selectedCalendar === calendar ? styles.selected : ""
+                }`}
+                onClick={() => handleCalendarSelect(calendar)}
+              >
+                <label>
+                  <input
+                    type="radio"
+                    name="calendar"
+                    defaultChecked={calendars.indexOf(calendar) === 0}
+                  />
+                  {calendar.name}
+                </label>
+              </div>
+            </li>
+          ))}
+      </ul>
 
       <div className={styles["category-list"]}>
         <ul>

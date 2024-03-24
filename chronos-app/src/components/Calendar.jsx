@@ -109,7 +109,6 @@ const Calendar = ({ selectedCalendar }) => {
       setSelectedDay(day);
       setIsEventFormOpen(true);
     };
-
     if (currentView === "month") {
       const firstDayOfMonth = new Date(
         currentDate.getFullYear(),
@@ -160,7 +159,11 @@ const Calendar = ({ selectedCalendar }) => {
           : [];
 
         const eventItems = eventsForDay.map((event) => (
-          <div key={event.eventId} className={styles.event}>
+          <div
+            key={event.eventId}
+            className={`${styles.event}`}
+            style={{ backgroundColor: event.color }}
+          >
             {event.name}
           </div>
         ));
@@ -189,13 +192,50 @@ const Calendar = ({ selectedCalendar }) => {
           currentDate.getFullYear() === today.getFullYear() &&
           currentDate.getMonth() === today.getMonth() &&
           firstDayOfWeek.getDate() === today.getDate();
+        const firstHourOfDay = new Date(firstDayOfWeek);
+        const lastHourOfDay = new Date(firstDayOfWeek);
+        firstHourOfDay.setHours(0, 0, 0, 0);
+        lastHourOfDay.setHours(23, 59, 59, 999);
+        const dayEvents =
+          events &&
+          events.filter((event) => {
+            const eventStart = new Date(event.start);
+            return eventStart >= firstHourOfDay && eventStart <= lastHourOfDay;
+          });
+
         days.push(
-          <div key={i} className={`${null} ${isToday ? styles.today : ""}`}>
+          <div
+            key={i}
+            className={`${styles.day1} ${isToday ? styles.today : ""}`}
+          >
             {firstDayOfWeek.getDate()}
             <div className={styles.hours}>
               {Array.from({ length: 24 }, (_, index) => (
                 <div key={index} className={styles.hour}>
                   {index}:00
+                  <div className={styles.eventsContainer}>
+                    {dayEvents &&
+                      dayEvents.map((event, eventIndex) => {
+                        const eventStart = new Date(event.start);
+                        if (eventStart.getHours() === index) {
+                          return (
+                            <div
+                              key={eventIndex}
+                              className={styles.event}
+                              style={{
+                                top: `${(eventStart.getMinutes() / 60) * 100}%`,
+                                backgroundColor: event.color,
+                              }}
+                            >
+                              <span className={styles.eventText}>
+                                {event.name}
+                              </span>
+                            </div>
+                          );
+                        }
+                        return null;
+                      })}
+                  </div>
                 </div>
               ))}
             </div>

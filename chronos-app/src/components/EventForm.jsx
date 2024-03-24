@@ -14,7 +14,6 @@ const EventForm = ({ onCreate, onCancel, onClose, calendars }) => {
   const [end, setEnd] = useState("");
   const [type, setType] = useState("");
   const [color, setColor] = useState("#000000");
-  console.log(calendars);
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!calendar) {
@@ -89,6 +88,7 @@ const EventForm = ({ onCreate, onCancel, onClose, calendars }) => {
             value={start}
             onChange={(e) => setStart(e.target.value)}
             required
+            max={end}
             className={styles.input}
           />
 
@@ -101,6 +101,7 @@ const EventForm = ({ onCreate, onCancel, onClose, calendars }) => {
             value={end}
             onChange={(e) => setEnd(e.target.value)}
             required
+            min={start}
             className={styles.input}
           />
 
