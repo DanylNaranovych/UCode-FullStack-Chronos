@@ -18,11 +18,11 @@ export default class eventsController {
         return;
       }
 
-      const rows = await eventsTable.getAllCalendarEvents(calendarId);
+      const events = await eventsTable.getAllCalendarEvents(calendarId);
 
       res.status(200).json({
         msg: "Success",
-        eventsArray: rows[0],
+        eventsArray: events,
       });
     } catch (err) {
       console.error(err);
@@ -45,12 +45,12 @@ export default class eventsController {
       }
 
       const eventId = await eventsTable.create(
-        name,
-        content,
-        start,
-        end,
-        type,
-        color ? color : "#fff"
+          name,
+          content,
+          start,
+          end,
+          type,
+          color ? color : "#fff"
       );
 
       await eventsTable.saveCalendarEvent(eventId, calendarId);
@@ -133,10 +133,10 @@ export default class eventsController {
     }
   }
 
-    static async deleteEvent(req, res) {
-        try {
-            const {eventId} = req.params;
-            const {calendarId} = req.body;
+  static async deleteEvent(req, res) {
+    try {
+      const {eventId} = req.params;
+      const {calendarId} = req.body;
 
       const token = req.cookies.token;
       const { userId } = await TokenService.getData(token);
