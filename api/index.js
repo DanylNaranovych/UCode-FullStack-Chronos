@@ -4,7 +4,7 @@ import fileUpload from "express-fileupload";
 import cookieParser from "cookie-parser";
 import router from "./routes/router.js";
 
-const port = 80;
+const port = 8000;
 const app = express();
 
 app.use(cookieParser());

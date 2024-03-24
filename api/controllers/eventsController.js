@@ -6,7 +6,7 @@ export default class eventsController {
 
     static async getAllCalendarEvents(req, res) {
         try {
-            const {calendarId} = req.body;
+            const {calendarId} = req.query;
 
             const token = req.cookies.token;
             const {userId} = await TokenService.getData(token);
@@ -19,11 +19,11 @@ export default class eventsController {
                 return;
             }
 
-            const rows = await eventsTable.getAllCalendarEvents(calendarId);
+            const events = await eventsTable.getAllCalendarEvents(calendarId);
 
             res.status(200).json({
                msg:"Success",
-               eventsArray: rows[0]
+               eventsArray: events
             });
         } catch (err) {
             console.error(err);

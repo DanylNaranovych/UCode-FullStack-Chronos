@@ -39,11 +39,12 @@ export default class Event extends Model {
         return rows.length > 0 && rows[0].role === 'admin';
     }
 
-    async getAllCalendarEvents(userId) {
+    async getAllCalendarEvents(calendarId) {
         const query = `SELECT * FROM events 
-                            INNER JOIN calendarEvents ON events.id = calendarevents.calendarId
-                            WHERE calendarevents.eventId = ?`;
-        return await dbService.makeRequest(query, [userId]);
+                            INNER JOIN calendarEvents ON events.id = calendarevents.eventId
+                            WHERE calendarevents.calendarId = ?`;
+        const rows = await dbService.makeRequest(query, [calendarId]);
+        return rows[0];
     }
 
 }
