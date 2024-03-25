@@ -10,21 +10,24 @@
 }
 
 .eventsContainer {
+  margin-top: -4.4vw;
   position: relative;
+  /* padding: 0px; */
 }
 
 .event {
   text-align: left;
   color: white;
-  padding: 4px 8px;
+  /* padding: 4px 8px; */
+  padding: 0px;
   border-radius: 10px;
-  margin-bottom: 2px;
+  /* margin-bottom: 2px; */
 }
 
 .eventText {
   transform: translateY(-50%);
-  left: 10px; /* Добавим отступ слева, чтобы текст не прилипал к левому краю */
-  right: 10px; /* Добавим отступ справа, чтобы текст не прилипал к правому краю */
+  left: 10px;
+  right: 10px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

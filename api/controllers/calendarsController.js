@@ -11,7 +11,7 @@ export default class calendarsController {
             const calendarTable = new Calendar();
             const rows = await calendarTable.getAllUserCalendars(userId);
 
-            res.status(500).json({
+            res.status(200).json({
                 calendarsArray: rows[0]
             });
         } catch (err) {

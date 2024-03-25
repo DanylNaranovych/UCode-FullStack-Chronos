@@ -291,18 +291,16 @@ const Calendar = ({ selectedCalendar }) => {
                       dayEvents.map((event, eventIndex) => {
                         const eventStart = new Date(event.start);
                         if (eventStart.getHours() === index) {
-                          const minutesInHour = 60;
                           const positionInHour =
-                            (eventStart.getHours() * minutesInHour +
-                              eventStart.getMinutes()) /
-                            minutesInHour;
+                            eventStart.getHours() + eventStart.getMinutes();
                           return (
                             <div
                               key={eventIndex}
                               className={styles.event}
                               style={{
-                                top: `${(positionInHour / 24) * 100}%`,
+                                marginTop: `${positionInHour}%`,
                                 backgroundColor: event.color,
+                                height: `100px`,
                               }}
                             >
                               <span className={styles.eventText}>
