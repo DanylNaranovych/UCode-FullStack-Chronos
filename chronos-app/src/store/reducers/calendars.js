@@ -8,6 +8,18 @@ const calendarsReducer = (state = initialState, action) => {
       return { ...state, calendars: action.payload };
     case "CREATE_CALENDAR":
       return { ...state, calendars: [...state.calendars, action.payload] };
+    case "DELETE_CALENDAR_SUCCESS":
+      return {
+        ...state,
+        calendars: state.calendars.filter(
+          (calendar) => calendar.id !== action.payload.calendarId
+        ),
+      };
+    case "DELETE_CALENDAR_FAILURE":
+      return {
+        ...state,
+        error: action.payload.error,
+      };
     default:
       return state;
   }

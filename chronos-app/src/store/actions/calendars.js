@@ -12,12 +12,8 @@ export const getAllUserCalendars = () => async (dispatch) => {
 
 export const createUserCalendar = (name, description) => async (dispatch) => {
   try {
-    const response = await CalendarsService.createUserCalendar(
-      name,
-      description
-    );
+    await CalendarsService.createUserCalendar(name, description);
     dispatch(getAllUserCalendars());
-    console.log(response);
     // dispatch({ type: "GET_CALENDARS", payload: response.data.calendars });
   } catch (error) {
     console.error("Failed to create a calendar", error);
@@ -26,10 +22,21 @@ export const createUserCalendar = (name, description) => async (dispatch) => {
 
 export const deleteCalendarById = (calendarId) => async (dispatch) => {
   try {
-    const response = await CalendarsService.deleteCalendarById(calendarId);
-    dispatch({ type: "GET_CALENDARS", payload: response.data.calendars });
+    await CalendarsService.deleteCalendarById(calendarId);
+    dispatch({
+      type: "DELETE_CALENDAR_SUCCESS",
+      payload: {
+        calendarId: calendarId,
+      },
+    });
   } catch (error) {
-    console.error("Failed to delete the calendar", error);
+    console.error("Calendar removal failed", error);
+    dispatch({
+      type: "DELETE_CALENDAR_FAILURE",
+      payload: {
+        error: error.message,
+      },
+    });
   }
 };
 

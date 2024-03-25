@@ -7,7 +7,9 @@ export default class EventService {
   }
 
   static async deleteEvent(calendarId, eventId) {
-    return $api.delete(`/events/${eventId}`, calendarId);
+    console.log(calendarId);
+    console.log(eventId);
+    return $api.delete(`/events/${eventId}/${calendarId}`);
   }
 
   static async getEventCalendar(calendarId) {

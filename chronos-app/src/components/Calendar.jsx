@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "../styles/Calendar.module.css";
 import EventForm from "./EventForm";
 import Event from "./Event";
+import axios from "axios";
 
 import { getEventsForCalendar } from "../store/actions/event";
 
@@ -33,13 +34,38 @@ const Calendar = ({ selectedCalendar }) => {
   const [isEventFormOpen, setIsEventFormOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
-  const events = useSelector((state) => state.event.events.eventsArray);
+  const [holidaysArray, setHolidaysArray] = useState(null);
+  const events = useSelector((state) => state.event.events);
 
   useEffect(() => {
     if (selectedCalendar) {
       dispatch(getEventsForCalendar(selectedCalendar.id));
+      const fetchData = async () => {
+        try {
+          const response = await fetch("https://ipapi.co/json/");
+          const data = await response.json();
+          const country = data.country_code;
+          const year = "2024";
+
+          const result = await axios.get(
+            `https://api.api-ninjas.com/v1/holidays?country=${country}&year=${year}`,
+            {
+              headers: {
+                "X-Api-Key": "0MBiovU18kls8rixZjnc8w==Mgcf6JOijmRzSGjO",
+              },
+            }
+          );
+          setHolidaysArray(result.data);
+        } catch (error) {
+          console.error("Error: ", error);
+        }
+      };
+
+      fetchData();
     }
   }, [selectedCalendar, dispatch]);
+
+  useEffect(() => {}, []);
 
   const goToPrevious = () => {
     if (currentView === "month") {
@@ -104,7 +130,9 @@ const Calendar = ({ selectedCalendar }) => {
   };
 
   const handleOpenEvent = (event) => {
-    setSelectedEvent(event);
+    if (!selectedDay) {
+      setSelectedEvent(event);
+    }
   };
 
   const handleCloseEvent = () => {
@@ -177,6 +205,17 @@ const Calendar = ({ selectedCalendar }) => {
             })
           : [];
 
+        const holidaysForDay = holidaysArray
+          ? holidaysArray.filter((holiday) => {
+              const holidayDate = new Date(holiday.date);
+              return (
+                holidayDate.getDate() === i &&
+                holidayDate.getMonth() === currentDate.getMonth() &&
+                holidayDate.getFullYear() === currentDate.getFullYear()
+              );
+            })
+          : [];
+
         const eventItems = eventsForDay.map((event) => (
           <div
             key={event.eventId}
@@ -191,6 +230,16 @@ const Calendar = ({ selectedCalendar }) => {
           </div>
         ));
 
+        const holidayItems = holidaysForDay.map((holiday) => (
+          <div
+            key={i}
+            className={`${styles.event}`}
+            style={{ backgroundColor: "red" }}
+          >
+            {holiday.name}
+          </div>
+        ));
+
         days.push(
           <div
             key={`current-${i}`}
@@ -198,6 +247,7 @@ const Calendar = ({ selectedCalendar }) => {
             onClick={() => openEventForm(i)}
           >
             <div>{i}</div>
+            <div className={styles.eventContainer}>{holidayItems}</div>
             <div className={styles.eventContainer}>{eventItems}</div>
           </div>
         );
@@ -241,12 +291,17 @@ const Calendar = ({ selectedCalendar }) => {
                       dayEvents.map((event, eventIndex) => {
                         const eventStart = new Date(event.start);
                         if (eventStart.getHours() === index) {
+                          const minutesInHour = 60;
+                          const positionInHour =
+                            (eventStart.getHours() * minutesInHour +
+                              eventStart.getMinutes()) /
+                            minutesInHour;
                           return (
                             <div
                               key={eventIndex}
                               className={styles.event}
                               style={{
-                                top: `${(eventStart.getMinutes() / 60) * 100}%`,
+                                top: `${(positionInHour / 24) * 100}%`,
                                 backgroundColor: event.color,
                               }}
                             >
@@ -348,7 +403,10 @@ const Calendar = ({ selectedCalendar }) => {
           start={selectedEvent.start}
           end={selectedEvent.end}
           type={selectedEvent.type}
+          calendarId={selectedEvent.calendarId}
+          eventId={selectedEvent.eventId}
           onClose={handleCloseEvent}
+          onCancel={handleCloseEvent}
         />
       )}
 

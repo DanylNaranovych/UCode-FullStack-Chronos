@@ -9,23 +9,25 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
 
+.eventsContainer {
+  position: relative;
+}
+
 .event {
   text-align: left;
   color: white;
-  height: 15px;
   padding: 4px 8px;
   border-radius: 10px;
   margin-bottom: 2px;
 }
 
 .eventText {
+  transform: translateY(-50%);
+  left: 10px; /* Добавим отступ слева, чтобы текст не прилипал к левому краю */
+  right: 10px; /* Добавим отступ справа, чтобы текст не прилипал к правому краю */
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
-  word-wrap: break-word;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
 .heading {
@@ -89,6 +91,7 @@
 
 .day {
   height: 100px;
+  overflow: hidden;
 }
 
 .oneday {

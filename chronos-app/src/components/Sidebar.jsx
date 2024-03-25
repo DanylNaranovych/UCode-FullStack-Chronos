@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { getAllUserCalendars } from "../store/actions/calendars";
+import {
+  deleteCalendarById,
+  getAllUserCalendars,
+} from "../store/actions/calendars";
 import { useDispatch, useSelector } from "react-redux";
 
 import styles from "../styles/Sidebar.module.css";
@@ -12,6 +15,7 @@ import { logout } from "../store/actions/auth.js";
 const Sidebar = ({ onLogout, onSelectCalendar }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const calendars = useSelector((state) => state.calendars.calendars);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
@@ -26,6 +30,15 @@ const Sidebar = ({ onLogout, onSelectCalendar }) => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
+
+  const handleDelete = () => {
+    setShowConfirmation(true);
+  };
+
+  const confirmDelete = async () => {
+    await dispatch(deleteCalendarById(selectedCalendar.id));
+    setShowConfirmation(false);
+  };
 
   const handleCreateEventClick = () => {
     setIsModalOpen(true);
@@ -104,10 +117,33 @@ const Sidebar = ({ onLogout, onSelectCalendar }) => {
                   />
                   {calendar.name}
                 </label>
+                <button onClick={() => handleDelete(calendar)}>X</button>
               </div>
             </li>
           ))}
       </ul>
+
+      {showConfirmation && (
+        <div className={styles.confirmationModal}>
+          <div className={styles.confirmationContent}>
+            <p>Are you sure you want to delete this calendar?</p>
+            <div className={styles.confirmationButtons}>
+              <button
+                onClick={confirmDelete}
+                className={styles.confirmationButton}
+              >
+                Yes, delete
+              </button>
+              <button
+                onClick={() => setShowConfirmation(false)}
+                className={styles.confirmationButton}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className={styles["category-list"]}>
         <ul>
