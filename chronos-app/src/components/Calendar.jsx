@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../styles/Calendar.module.css";
 import EventForm from "./EventForm";
+import Event from "./Event";
 
 import { getEventsForCalendar } from "../store/actions/event";
 
@@ -30,6 +31,7 @@ const Calendar = ({ selectedCalendar }) => {
   const [currentView, setCurrentView] = useState("month");
   const [currentDate, setCurrentDate] = useState(new Date());
   const [isEventFormOpen, setIsEventFormOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
   const events = useSelector((state) => state.event.events.eventsArray);
 
@@ -101,14 +103,31 @@ const Calendar = ({ selectedCalendar }) => {
     }
   };
 
+  const handleOpenEvent = (event) => {
+    setSelectedEvent(event);
+  };
+
+  const handleCloseEvent = () => {
+    setSelectedEvent(null);
+  };
+
+  const handleCreateEventClick = () => {
+    setIsEventFormOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsEventFormOpen(false);
+  };
+
   const renderDays = () => {
     const days = [];
     const today = new Date();
 
     const openEventForm = (day) => {
-      setSelectedDay(day);
       setIsEventFormOpen(true);
+      setSelectedDay(day);
     };
+
     if (currentView === "month") {
       const firstDayOfMonth = new Date(
         currentDate.getFullYear(),
@@ -163,6 +182,10 @@ const Calendar = ({ selectedCalendar }) => {
             key={event.eventId}
             className={`${styles.event}`}
             style={{ backgroundColor: event.color }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleOpenEvent(event);
+            }}
           >
             {event.name}
           </div>
@@ -273,11 +296,14 @@ const Calendar = ({ selectedCalendar }) => {
       <>
         {isEventFormOpen && (
           <EventForm
-            selectedDay={selectedDay}
+            onCreate={handleCreateEventClick}
+            onCancel={handleCloseModal}
             onClose={() => setIsEventFormOpen(false)}
+            calendars={[selectedCalendar]}
           />
         )}
       </>
+
       <div className={styles.navigation}>
         <button className={styles.button} onClick={goToPrevious}>
           Prev
@@ -314,6 +340,16 @@ const Calendar = ({ selectedCalendar }) => {
             <div key={index}>{weekday}</div>
           ))}
         </div>
+      )}
+      {selectedEvent && (
+        <Event
+          title={selectedEvent.name}
+          content={selectedEvent.content}
+          start={selectedEvent.start}
+          end={selectedEvent.end}
+          type={selectedEvent.type}
+          onClose={handleCloseEvent}
+        />
       )}
 
       <div className={styles.days}>{renderDays()}</div>

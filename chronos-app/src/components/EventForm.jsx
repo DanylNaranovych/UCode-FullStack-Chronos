@@ -31,6 +31,7 @@ const EventForm = ({ onCreate, onCancel, onClose, calendars }) => {
     setColor("#000000");
     onClose();
   };
+  console.log(calendars);
 
   return (
     <div className={styles.container}>
