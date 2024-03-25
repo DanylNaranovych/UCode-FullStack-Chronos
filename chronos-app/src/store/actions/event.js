@@ -27,3 +27,12 @@ export const createEvent =
       console.error("Error: can't create Event", error);
     }
   };
+
+  export const deleteEvent = (calendarId, eventId) => async (dispatch) => {
+    try {
+      const response = await EventService.deleteEvent(calendarId, eventId);
+      dispatch({ type: "SET_EVENTS", payload: response.data });
+    } catch (error) {
+      console.error("Event removal failed", error);
+    }
+  };
