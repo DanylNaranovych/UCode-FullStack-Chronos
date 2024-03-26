@@ -105,6 +105,11 @@
   width: 100%;
 }
 
+.oneDay .eventWeek {
+  /* width: 100%; */
+  margin-left: 50px;
+}
+
 .days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
