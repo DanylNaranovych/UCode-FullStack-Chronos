@@ -1,5 +1,5 @@
 const initialState = {
-  events: [], // массив событий
+  events: [],
   loading: false,
   error: null,
 };

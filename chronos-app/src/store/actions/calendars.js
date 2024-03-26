@@ -14,7 +14,6 @@ export const createUserCalendar = (name, description) => async (dispatch) => {
   try {
     await CalendarsService.createUserCalendar(name, description);
     dispatch(getAllUserCalendars());
-    // dispatch({ type: "GET_CALENDARS", payload: response.data.calendars });
   } catch (error) {
     console.error("Failed to create a calendar", error);
   }
@@ -53,5 +52,3 @@ export const updateCalendarById =
       console.error("Failed to change the calendar", error);
     }
   };
-
-// TODO - realize all the actions for calendars

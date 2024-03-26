@@ -270,9 +270,9 @@ const Calendar = ({ selectedCalendar, selectedCategories }) => {
       }
     } else if (currentView === "week") {
       const firstDayOfWeek = new Date(currentDate);
-      const dayOfWeek = firstDayOfWeek.getDay(); // Получаем день недели (0 - воскресенье, 1 - понедельник, и т.д.)
-      const diff = 1 - dayOfWeek; // Разница между первым днем недели и текущим днем
-      firstDayOfWeek.setDate(firstDayOfWeek.getDate() + diff); // Устанавливаем первый день недели
+      const dayOfWeek = firstDayOfWeek.getDay();
+      const diff = 1 - dayOfWeek;
+      firstDayOfWeek.setDate(firstDayOfWeek.getDate() + diff);
 
       for (let i = 0; i < 7; i++) {
         const isToday =
@@ -283,12 +283,11 @@ const Calendar = ({ selectedCalendar, selectedCategories }) => {
         const dayEvents = events.filter((event) => {
           const eventStart = new Date(event.start);
           return (
-            eventStart.getDate() === firstDayOfWeek.getDate() && // Фильтруем события для текущего дня
-            eventStart.getMonth() === firstDayOfWeek.getMonth() && // Текущий месяц
-            eventStart.getFullYear() === firstDayOfWeek.getFullYear() // Текущий год
+            eventStart.getDate() === firstDayOfWeek.getDate() &&
+            eventStart.getMonth() === firstDayOfWeek.getMonth() &&
+            eventStart.getFullYear() === firstDayOfWeek.getFullYear()
           );
         });
-
         days.push(
           <div
             key={i}
@@ -301,9 +300,12 @@ const Calendar = ({ selectedCalendar, selectedCategories }) => {
                   const eventStart = new Date(event.start);
                   return eventStart.getHours() === index;
                 });
-
                 return (
-                  <div key={index} className={styles.hour}>
+                  <div
+                    key={index}
+                    className={styles.hour}
+                    onClick={() => openEventForm()}
+                  >
                     <div className={styles.time}>{index}:00</div>
                     <div className={styles.eventsContainer}>
                       {currentHourEvents.map((event, eventIndex) => {
@@ -333,10 +335,15 @@ const Calendar = ({ selectedCalendar, selectedCategories }) => {
                               left: `${eventIndex * eventWidth}%`,
                               backgroundColor: event.color,
                             }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleOpenEvent(event);
+                            }}
                           >
                             <span className={styles.eventText}>
                               {event.name}
                             </span>
+                            <div className={styles.overlay}></div>
                           </div>
                         );
                       })}
@@ -348,7 +355,7 @@ const Calendar = ({ selectedCalendar, selectedCategories }) => {
           </div>
         );
 
-        firstDayOfWeek.setDate(firstDayOfWeek.getDate() + 1); // Переходим к следующему дню
+        firstDayOfWeek.setDate(firstDayOfWeek.getDate() + 1);
       }
     } else if (currentView === "day") {
       const hours = [];
