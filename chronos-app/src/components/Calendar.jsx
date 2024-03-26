@@ -358,25 +358,85 @@ const Calendar = ({ selectedCalendar, selectedCategories }) => {
         firstDayOfWeek.setDate(firstDayOfWeek.getDate() + 1);
       }
     } else if (currentView === "day") {
-      const hours = [];
+      const selectedDay = new Date(currentDate);
 
-      for (let hour = 0; hour < 24; hour++) {
-        hours.push(
-          <div key={hour} className={styles.hour}>
-            {hour}:00
-          </div>
+      const dayEvents = events.filter((event) => {
+        const eventStart = new Date(event.start);
+        return (
+          eventStart.getDate() === selectedDay.getDate() &&
+          eventStart.getMonth() === selectedDay.getMonth() &&
+          eventStart.getFullYear() === selectedDay.getFullYear()
         );
-      }
-      const todayString = `${currentDate.getDate()}.${
-        currentDate.getMonth() + 1
-      }.${currentDate.getFullYear()}`;
-      const dayAndHours = (
-        <div className={styles.oneday}>
-          <div>{todayString}</div>
-          <div className={styles.hours}>{hours}</div>
+      });
+
+      return (
+        <div className={styles.oneDay}>
+          <div className={styles.dayHeader}>
+            {selectedDay.toLocaleDateString(undefined, {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </div>
+          <div className={styles.hours}>
+            {Array.from({ length: 24 }, (_, index) => {
+              const currentHourEvents = dayEvents.filter((event) => {
+                const eventStart = new Date(event.start);
+                return eventStart.getHours() === index;
+              });
+              return (
+                <div
+                  key={index}
+                  className={styles.hour}
+                  onClick={() => openEventForm()}
+                >
+                  <div className={styles.time}>{index}:00</div>
+                  <div className={styles.eventsContainer}>
+                    {currentHourEvents.map((event, eventIndex) => {
+                      const eventStart = new Date(event.start);
+                      const eventEnd = new Date(event.end);
+                      const eventDuration =
+                        (eventEnd - eventStart) / (1000 * 60 * 60);
+                      let positionInHour = 0;
+
+                      const minutesInHour = eventStart.getMinutes();
+                      if (minutesInHour === 0) {
+                        positionInHour = -50;
+                      } else if (minutesInHour === 60) {
+                        positionInHour = 50;
+                      } else {
+                        positionInHour = (100 / 60) * minutesInHour - 50;
+                      }
+                      const eventWidth = 100 / currentHourEvents.length;
+                      const eventHeight = eventDuration * 100;
+                      return (
+                        <div
+                          key={eventIndex}
+                          className={styles.eventWeek}
+                          style={{
+                            top: `${positionInHour}px`,
+                            height: `${eventHeight}px`,
+                            left: `${eventIndex * eventWidth}%`,
+                            backgroundColor: event.color,
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpenEvent(event);
+                          }}
+                        >
+                          <span className={styles.eventText}>{event.name}</span>
+                          <div className={styles.overlay}></div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       );
-      days.push(dayAndHours);
     }
 
     return days;
@@ -445,8 +505,12 @@ const Calendar = ({ selectedCalendar, selectedCategories }) => {
           onCancel={handleCloseEvent}
         />
       )}
-
-      <div className={styles.days}>{renderDays()}</div>
+      {currentView !== "day" && (
+        <div className={styles.days}>{renderDays()}</div>
+      )}
+      {currentView === "day" && (
+        <div className={styles.oneDay}>{renderDays()}</div>
+      )}
     </div>
   );
 };

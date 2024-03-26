@@ -97,6 +97,14 @@
   text-align: center;
 }
 
+.oneDay {
+  width: 100%;
+}
+
+.oneDay .hour {
+  width: 100%;
+}
+
 .days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -119,10 +127,6 @@
 .day {
   height: 100px;
   overflow: hidden;
-}
-
-.oneday {
-  grid-column: span 7;
 }
 
 .hours {
