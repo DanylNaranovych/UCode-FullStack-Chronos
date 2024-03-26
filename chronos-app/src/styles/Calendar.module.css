@@ -9,19 +9,33 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
 
+.eventMonth {
+  text-align: left;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 10px;
+  margin-bottom: 2px;
+}
+
+.eventWeek {
+  text-align: left;
+  color: white;
+  padding: 0px;
+  border-radius: 10px;
+}
+
+.eventHoliday {
+  background: linear-gradient(135deg, #414141, #ff0000);
+  text-align: left;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 10px;
+  margin-bottom: 2px;
+}
+
 .eventsContainer {
   margin-top: -4.4vw;
   position: relative;
-  /* padding: 0px; */
-}
-
-.event {
-  text-align: left;
-  color: white;
-  /* padding: 4px 8px; */
-  padding: 0px;
-  border-radius: 10px;
-  /* margin-bottom: 2px; */
 }
 
 .eventText {

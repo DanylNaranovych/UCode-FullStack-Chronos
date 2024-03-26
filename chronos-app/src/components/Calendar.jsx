@@ -219,7 +219,7 @@ const Calendar = ({ selectedCalendar }) => {
         const eventItems = eventsForDay.map((event) => (
           <div
             key={event.eventId}
-            className={`${styles.event}`}
+            className={`${styles.eventMonth}`}
             style={{ backgroundColor: event.color }}
             onClick={(e) => {
               e.stopPropagation();
@@ -233,7 +233,7 @@ const Calendar = ({ selectedCalendar }) => {
         const holidayItems = holidaysForDay.map((holiday) => (
           <div
             key={i}
-            className={`${styles.event}`}
+            className={`${styles.eventHoliday}`}
             style={{ backgroundColor: "red" }}
           >
             {holiday.name}
@@ -296,11 +296,10 @@ const Calendar = ({ selectedCalendar }) => {
                           return (
                             <div
                               key={eventIndex}
-                              className={styles.event}
+                              className={styles.eventWeek}
                               style={{
                                 marginTop: `${positionInHour}%`,
                                 backgroundColor: event.color,
-                                height: `100px`,
                               }}
                             >
                               <span className={styles.eventText}>
