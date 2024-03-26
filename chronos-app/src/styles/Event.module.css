@@ -49,6 +49,7 @@
   font-size: 16px;
   transition: background-color 0.3s ease;
   margin-top: 20px;
+  margin-right: 10px;
 }
 
 .cancelButton:hover {
@@ -95,6 +96,12 @@
 
 .contentWrapper {
   margin-bottom: 20px;
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: right;
+  position: relative;
 }
 
 .timeWrapper {

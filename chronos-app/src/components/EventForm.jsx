@@ -31,7 +31,6 @@ const EventForm = ({ onCreate, onCancel, onClose, calendars }) => {
     setColor("#000000");
     onClose();
   };
-  console.log(calendars);
 
   return (
     <div className={styles.container}>
@@ -46,7 +45,7 @@ const EventForm = ({ onCreate, onCancel, onClose, calendars }) => {
             value={calendar}
             onChange={(e) => setCalendar(e.target.value)}
             required
-            className={styles.input}
+            className={styles.selectInput}
           >
             <option value="">Select a calendar</option>
             {calendars.map((calendar) => (
@@ -114,7 +113,7 @@ const EventForm = ({ onCreate, onCancel, onClose, calendars }) => {
             value={type}
             onChange={(e) => setType(e.target.value)}
             required
-            className={styles.input}
+            className={styles.selectInput}
           >
             <option value="">Select type</option>
             <option value="arrangement">Arrangements</option>
@@ -134,15 +133,15 @@ const EventForm = ({ onCreate, onCancel, onClose, calendars }) => {
           />
 
           <div className={styles.buttons}>
-            <button type="submit" className={styles.submitButton}>
-              Create
-            </button>
             <button
               type="button"
               onClick={onCancel}
               className={styles.cancelButton}
             >
               Cancel
+            </button>
+            <button type="submit" className={styles.submitButton}>
+              Create
             </button>
           </div>
         </form>

@@ -27,7 +27,7 @@ const getMonthName = (monthNumber) => {
   return months[monthNumber];
 };
 
-const Calendar = ({ selectedCalendar }) => {
+const Calendar = ({ selectedCalendar, selectedCategories }) => {
   const dispatch = useDispatch();
   const [currentView, setCurrentView] = useState("month");
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -35,36 +35,47 @@ const Calendar = ({ selectedCalendar }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
   const [holidaysArray, setHolidaysArray] = useState(null);
-  const events = useSelector((state) => state.event.events);
+  const storeEvents = useSelector((state) => state.event.events);
+  let events = storeEvents;
+  if (selectedCategories.length === 1 && selectedCategories[0] === "holiday") {
+    events = storeEvents;
+  } else if (selectedCategories.length > 0) {
+    events = storeEvents.filter((event) => {
+      return event.type && selectedCategories.includes(event.type);
+    });
+  }
 
   useEffect(() => {
     if (selectedCalendar) {
       dispatch(getEventsForCalendar(selectedCalendar.id));
-      const fetchData = async () => {
-        try {
-          const response = await fetch("https://ipapi.co/json/");
-          const data = await response.json();
-          const country = data.country_code;
-          const year = "2024";
+      if (selectedCategories.includes("holiday")) {
+        const fetchData = async () => {
+          try {
+            const response = await fetch("https://ipapi.co/json/");
+            const data = await response.json();
+            const country = data.country_code;
+            const year = "2024";
 
-          const result = await axios.get(
-            `https://api.api-ninjas.com/v1/holidays?country=${country}&year=${year}`,
-            {
-              headers: {
-                "X-Api-Key": "0MBiovU18kls8rixZjnc8w==Mgcf6JOijmRzSGjO",
-              },
-            }
-          );
-          setHolidaysArray(result.data);
-        } catch (error) {
-          console.error("Error: ", error);
-        }
-      };
+            const result = await axios.get(
+              `https://api.api-ninjas.com/v1/holidays?country=${country}&year=${year}`,
+              {
+                headers: {
+                  "X-Api-Key": "0MBiovU18kls8rixZjnc8w==Mgcf6JOijmRzSGjO",
+                },
+              }
+            );
+            setHolidaysArray(result.data);
+          } catch (error) {
+            console.error("Error: ", error);
+          }
+        };
 
-      fetchData();
+        fetchData();
+      } else {
+        setHolidaysArray(null);
+      }
     }
-  }, [selectedCalendar, dispatch]);
-
+  }, [selectedCalendar, selectedCategories, dispatch]);
   useEffect(() => {}, []);
 
   const goToPrevious = () => {
@@ -135,26 +146,31 @@ const Calendar = ({ selectedCalendar }) => {
     }
   };
 
+  const handleCreateEventClick = () => {
+    if (selectedCalendar) {
+      setIsEventFormOpen(true);
+    }
+  };
+
   const handleCloseEvent = () => {
     setSelectedEvent(null);
   };
 
-  const handleCreateEventClick = () => {
-    setIsEventFormOpen(true);
+  const openEventForm = (day) => {
+    if (selectedCalendar) {
+      setIsEventFormOpen(true);
+      setSelectedDay(day);
+    }
   };
 
   const handleCloseModal = () => {
     setIsEventFormOpen(false);
+    setSelectedDay(null);
   };
 
   const renderDays = () => {
     const days = [];
     const today = new Date();
-
-    const openEventForm = (day) => {
-      setIsEventFormOpen(true);
-      setSelectedDay(day);
-    };
 
     if (currentView === "month") {
       const firstDayOfMonth = new Date(

@@ -20,14 +20,9 @@ export const setUser = (user) => {
 };
 
 export const registration =
-  (email, password, passwordConfirmation, login) => async (dispatch) => {
+  (email, password, login, full_name) => async (dispatch) => {
     try {
-      await AuthService.registration(
-        email,
-        password,
-        passwordConfirmation,
-        login
-      );
+      await AuthService.register(email, password, login, full_name);
       dispatch({ type: "SET_MESSAGE", payload: "Success" });
     } catch (error) {
       dispatch({ type: "SET_MESSAGE", payload: "Error" });

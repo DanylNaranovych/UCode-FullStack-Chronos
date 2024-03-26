@@ -21,7 +21,7 @@ export const createEvent =
         type,
         color
       );
-      console.log(response);
+      dispatch(getEventsForCalendar(calendarId));
       dispatch({ type: "SET_MESSAGE", payload: response.data });
     } catch (error) {
       console.error("Error: can't create Event", error);

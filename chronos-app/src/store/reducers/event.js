@@ -8,6 +8,11 @@ const eventReducer = (state = initialState, action) => {
   switch (action.type) {
     case "SET_EVENTS":
       return { ...state, events: action.payload };
+    case "CREATE_EVENT":
+      return {
+        ...state,
+        events: action.payload,
+      };
     case "DELETE_EVENT_SUCCESS":
       return {
         ...state,

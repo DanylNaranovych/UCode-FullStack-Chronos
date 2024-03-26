@@ -132,6 +132,8 @@ li {
 }
 
 .calendarItem {
+  display: flex;
+  justify-content: space-between;
   padding: 10px;
   background-color: #333;
   border-radius: 5px;
@@ -192,4 +194,44 @@ input[type="radio"] {
 .confirmationButton:nth-child(2) {
   background-color: #6c757d;
   color: #fff;
+}
+
+.deleteButton {
+  background-color: transparent;
+  text-align: right;
+  border: none;
+  color: red;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.deleteButton:hover {
+  color: darkred;
+}
+
+.paginationContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px; /* Регулируйте отступ снизу по вашему усмотрению */
+}
+
+.paginationButton {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #666;
+  padding: 8px 16px;
+  margin: 0 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.paginationButton:hover {
+  background-color: #555;
+}
+
+.paginationButton[disabled] {
+  background-color: #666;
+  color: #999;
+  cursor: not-allowed;
 }

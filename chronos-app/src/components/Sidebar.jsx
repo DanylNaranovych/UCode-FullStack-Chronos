@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   deleteCalendarById,
   getAllUserCalendars,
@@ -12,31 +12,60 @@ import CalendarModalForm from "./ModalCalendarForm.jsx";
 
 import { logout } from "../store/actions/auth.js";
 
-const Sidebar = ({ onLogout, onSelectCalendar }) => {
+const Sidebar = ({ onLogout, onSelectCalendar, onSelectCategories }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+  const [currentPage, setCurrentPage] = useState(0);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const calendars = useSelector((state) => state.calendars.calendars);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCalendar, setSelectedCalendar] = useState(null);
+  const [deleteCalendar, setCalendarToDelete] = useState(null);
+  const [categories, setCategories] = useState([]);
+
+  const itemsPerPage = 5;
+  const totalPages = Math.ceil(calendars.length / itemsPerPage);
+
+  const handleClickNext = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages - 1));
+  };
+
+  const handleClickPrev = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
+  };
+
+  const startIndex = currentPage * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, calendars.length);
 
   useEffect(() => {
     dispatch(getAllUserCalendars());
     setIsLoading(false);
   }, [dispatch]);
 
+  const memoizedOnSelectCategories = useCallback(
+    (selectedCategories) => {
+      onSelectCategories(selectedCategories);
+    },
+    [onSelectCategories]
+  );
+
+  useEffect(() => {
+    memoizedOnSelectCategories(categories);
+  }, [categories, memoizedOnSelectCategories]);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  const handleDelete = () => {
+  const handleDelete = (calendar) => {
+    setCalendarToDelete(calendar);
     setShowConfirmation(true);
   };
 
   const confirmDelete = async () => {
-    await dispatch(deleteCalendarById(selectedCalendar.id));
+    await dispatch(deleteCalendarById(deleteCalendar.id));
     setShowConfirmation(false);
   };
 
@@ -64,6 +93,20 @@ const Sidebar = ({ onLogout, onSelectCalendar }) => {
   const handleCalendarSelect = (calendar) => {
     setSelectedCalendar(calendar);
     onSelectCalendar(calendar);
+  };
+
+  const handleCategoriesSelect = (category) => {
+    const { id, checked } = category.target;
+    if (checked) {
+      setCategories((prevSelectedCategories) => [
+        ...prevSelectedCategories,
+        id,
+      ]);
+    } else {
+      setCategories((prevSelectedCategories) =>
+        prevSelectedCategories.filter((category) => category !== id)
+      );
+    }
   };
 
   return (
@@ -99,9 +142,9 @@ const Sidebar = ({ onLogout, onSelectCalendar }) => {
         />
       </div>
 
-      <ul className={styles.calendarList}>
-        {calendars &&
-          calendars.map((calendar) => (
+      <div>
+        <ul className={styles.calendarList}>
+          {calendars.slice(startIndex, endIndex).map((calendar) => (
             <li key={calendar.id} className={styles.calendarListItem}>
               <div
                 className={`${styles.calendarItem} ${
@@ -117,11 +160,38 @@ const Sidebar = ({ onLogout, onSelectCalendar }) => {
                   />
                   {calendar.name}
                 </label>
-                <button onClick={() => handleDelete(calendar)}>X</button>
+                <button
+                  className={styles.deleteButton}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleDelete(calendar);
+                  }}
+                >
+                  X
+                </button>
               </div>
             </li>
           ))}
-      </ul>
+        </ul>
+        <div>
+          <div className={styles.paginationContainer}>
+            <button
+              className={`${styles.paginationButton}`}
+              onClick={handleClickPrev}
+              disabled={currentPage === 0}
+            >
+              {"<"}
+            </button>
+            <button
+              className={`${styles.paginationButton}`}
+              onClick={handleClickNext}
+              disabled={currentPage === totalPages - 1}
+            >
+              {">"}
+            </button>
+          </div>
+        </div>
+      </div>
 
       {showConfirmation && (
         <div className={styles.confirmationModal}>
@@ -149,16 +219,40 @@ const Sidebar = ({ onLogout, onSelectCalendar }) => {
         <ul>
           <h3>Categories</h3>
           <li>
-            <input type="checkbox" id="arrangements" />
+            <input
+              type="checkbox"
+              id="arrangement"
+              onChange={handleCategoriesSelect}
+              checked={categories.includes("arrangement")}
+            />
             <label htmlFor="arrangements">Arrangements</label>
           </li>
           <li>
-            <input type="checkbox" id="tasks" />
-            <label htmlFor="tasks">Tasks</label>
+            <input
+              type="checkbox"
+              id="task"
+              onChange={handleCategoriesSelect}
+              checked={categories.includes("task")}
+            />
+            <label htmlFor="task">Tasks</label>
           </li>
           <li>
-            <input type="checkbox" id="reminders" />
+            <input
+              type="checkbox"
+              id="reminder"
+              onChange={handleCategoriesSelect}
+              checked={categories.includes("reminder")}
+            />
             <label htmlFor="reminders">Reminders</label>
+          </li>
+          <li>
+            <input
+              type="checkbox"
+              id="holiday"
+              onChange={handleCategoriesSelect}
+              checked={categories.includes("holiday")}
+            />
+            <label htmlFor="holiday">Holidays</label>
           </li>
         </ul>
       </div>

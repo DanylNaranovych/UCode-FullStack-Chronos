@@ -5,12 +5,12 @@ export default class AuthService {
     return $api.post("auth/login", { login, password });
   }
 
-  static async register(email, password, passwordConfirmation, login) {
+  static async register(email, password, login, full_name) {
     return $api.post("auth/register", {
       email,
       password,
-      passwordConfirmation,
       login,
+      full_name,
     });
   }
 

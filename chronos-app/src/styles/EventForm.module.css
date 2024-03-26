@@ -40,8 +40,20 @@
 }
 
 .input {
-  width: calc(100% - 20px); /* Subtract padding */
+  width: calc(100% - 20px);
   padding: 10px;
+  font-size: 20px;
+  border: 1px solid #495057;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  background-color: #495057;
+  color: #fff;
+}
+
+.selectInput {
+  width: 100%;
+  padding: 10px;
+  font-size: 20px;
   border: 1px solid #495057;
   border-radius: 5px;
   margin-bottom: 20px;
@@ -68,7 +80,7 @@
 }
 
 .submitButton {
-  background-color: #007bff;
+  background-color: #305174;
   color: #fff;
 }
 
@@ -86,7 +98,7 @@
 }
 
 .colorInput {
-  width: calc(100% - 20px); /* Subtract padding */
+  width: calc(100% - 20px);
   padding: 10px;
   border: 1px solid #495057;
   border-radius: 5px;

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import AuthService from "../services/authService";
 
 import { useDispatch } from "react-redux";
 
-import { login } from "../store/actions/auth.js";
+import { login, registration } from "../store/actions/auth.js";
 
 import styles from "../styles/LoginForm.module.css";
 
@@ -11,13 +10,16 @@ const LoginForm = ({ onLoginSuccess }) => {
   const dispatch = useDispatch();
   const [email, setUserEmail] = useState("");
   const [name, setLogin] = useState("");
+  const [fullname, setFullName] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [isLoginFormOpen, setLoginFormOpen] = useState(true);
   const [error, setError] = useState(null);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
   const handleUserEmailChange = (e) => setUserEmail(e.target.value);
   const handleLoginChange = (e) => setLogin(e.target.value);
+  const handleFullNameChange = (e) => setFullName(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
   const handlePasswordConfirmationChange = (e) =>
     setPasswordConfirmation(e.target.value);
@@ -56,13 +58,8 @@ const LoginForm = ({ onLoginSuccess }) => {
       return;
     }
     try {
-      const response = await AuthService.register(
-        email,
-        password,
-        passwordConfirmation,
-        name
-      );
-      console.log("Успешный вход:", response.data);
+      await dispatch(registration(email, password, name, fullname));
+      setRegistrationSuccess(true);
     } catch (error) {
       console.error("Ошибка при входе:", error);
     }
@@ -71,6 +68,11 @@ const LoginForm = ({ onLoginSuccess }) => {
   const handleFormToggle = () => {
     setLoginFormOpen(!isLoginFormOpen);
     setError(null);
+  };
+
+  const handleOkButtonClick = () => {
+    setRegistrationSuccess(false);
+    setLoginFormOpen(true);
   };
 
   return (
@@ -110,6 +112,13 @@ const LoginForm = ({ onLoginSuccess }) => {
               value={name}
               onChange={handleLoginChange}
             />
+            <label className={styles.label}>Full Name:</label>
+            <input
+              className={styles.input}
+              type="text"
+              value={fullname}
+              onChange={handleFullNameChange}
+            />
             <label className={styles.label}>Email:</label>
             <input
               className={styles.input}
@@ -145,6 +154,16 @@ const LoginForm = ({ onLoginSuccess }) => {
           {isLoginFormOpen ? "Still not registered?" : "Back to login"}
         </button>
       </div>
+      {registrationSuccess && (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
+            <p>Registration Successful!</p>
+            <button className={styles.okButton} onClick={handleOkButtonClick}>
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

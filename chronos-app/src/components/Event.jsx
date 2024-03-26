@@ -62,11 +62,11 @@ const Event = ({
             </div>
           </div>
           <div className={styles.buttonWrapper}>
-            <button onClick={handleDelete} className={styles.cancelButton}>
-              Delete
-            </button>
             <button onClick={onCancel} className={styles.cancelButton}>
               Close
+            </button>
+            <button onClick={handleDelete} className={styles.cancelButton}>
+              Delete
             </button>
           </div>
         </div>
