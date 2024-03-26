@@ -270,69 +270,85 @@ const Calendar = ({ selectedCalendar, selectedCategories }) => {
       }
     } else if (currentView === "week") {
       const firstDayOfWeek = new Date(currentDate);
-      const dayOfWeek = currentDate.getDay();
-      const diff =
-        currentDate.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
-      firstDayOfWeek.setDate(diff);
-      const lastDayOfWeek = new Date(firstDayOfWeek);
-      lastDayOfWeek.setDate(lastDayOfWeek.getDate() + 6);
+      const dayOfWeek = firstDayOfWeek.getDay(); // Получаем день недели (0 - воскресенье, 1 - понедельник, и т.д.)
+      const diff = 1 - dayOfWeek; // Разница между первым днем недели и текущим днем
+      firstDayOfWeek.setDate(firstDayOfWeek.getDate() + diff); // Устанавливаем первый день недели
+
       for (let i = 0; i < 7; i++) {
         const isToday =
-          currentDate.getFullYear() === today.getFullYear() &&
-          currentDate.getMonth() === today.getMonth() &&
+          firstDayOfWeek.getFullYear() === today.getFullYear() &&
+          firstDayOfWeek.getMonth() === today.getMonth() &&
           firstDayOfWeek.getDate() === today.getDate();
-        const firstHourOfDay = new Date(firstDayOfWeek);
-        const lastHourOfDay = new Date(firstDayOfWeek);
-        firstHourOfDay.setHours(0, 0, 0, 0);
-        lastHourOfDay.setHours(23, 59, 59, 999);
-        const dayEvents =
-          events &&
-          events.filter((event) => {
-            const eventStart = new Date(event.start);
-            return eventStart >= firstHourOfDay && eventStart <= lastHourOfDay;
-          });
+
+        const dayEvents = events.filter((event) => {
+          const eventStart = new Date(event.start);
+          return (
+            eventStart.getDate() === firstDayOfWeek.getDate() && // Фильтруем события для текущего дня
+            eventStart.getMonth() === firstDayOfWeek.getMonth() && // Текущий месяц
+            eventStart.getFullYear() === firstDayOfWeek.getFullYear() // Текущий год
+          );
+        });
 
         days.push(
           <div
             key={i}
-            className={`${styles.day1} ${isToday ? styles.today : ""}`}
+            className={`${styles.dayWeek} ${isToday ? styles.today : ""}`}
           >
             {firstDayOfWeek.getDate()}
             <div className={styles.hours}>
-              {Array.from({ length: 24 }, (_, index) => (
-                <div key={index} className={styles.hour}>
-                  {index}:00
-                  <div className={styles.eventsContainer}>
-                    {dayEvents &&
-                      dayEvents.map((event, eventIndex) => {
+              {Array.from({ length: 24 }, (_, index) => {
+                const currentHourEvents = dayEvents.filter((event) => {
+                  const eventStart = new Date(event.start);
+                  return eventStart.getHours() === index;
+                });
+
+                return (
+                  <div key={index} className={styles.hour}>
+                    <div className={styles.time}>{index}:00</div>
+                    <div className={styles.eventsContainer}>
+                      {currentHourEvents.map((event, eventIndex) => {
                         const eventStart = new Date(event.start);
-                        if (eventStart.getHours() === index) {
-                          const positionInHour =
-                            eventStart.getHours() + eventStart.getMinutes();
-                          return (
-                            <div
-                              key={eventIndex}
-                              className={styles.eventWeek}
-                              style={{
-                                marginTop: `${positionInHour}%`,
-                                backgroundColor: event.color,
-                              }}
-                            >
-                              <span className={styles.eventText}>
-                                {event.name}
-                              </span>
-                            </div>
-                          );
+                        const eventEnd = new Date(event.end);
+                        const eventDuration =
+                          (eventEnd - eventStart) / (1000 * 60 * 60);
+                        let positionInHour = 0;
+
+                        const minutesInHour = eventStart.getMinutes();
+                        if (minutesInHour === 0) {
+                          positionInHour = -50;
+                        } else if (minutesInHour === 60) {
+                          positionInHour = 50;
+                        } else {
+                          positionInHour = (100 / 60) * minutesInHour - 50;
                         }
-                        return null;
+                        const eventWidth = 100 / currentHourEvents.length;
+                        const eventHeight = eventDuration * 100;
+                        return (
+                          <div
+                            key={eventIndex}
+                            className={styles.eventWeek}
+                            style={{
+                              top: `${positionInHour}px`,
+                              height: `${eventHeight}px`,
+                              left: `${eventIndex * eventWidth}%`,
+                              backgroundColor: event.color,
+                            }}
+                          >
+                            <span className={styles.eventText}>
+                              {event.name}
+                            </span>
+                          </div>
+                        );
                       })}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         );
-        firstDayOfWeek.setDate(firstDayOfWeek.getDate() + 1);
+
+        firstDayOfWeek.setDate(firstDayOfWeek.getDate() + 1); // Переходим к следующему дню
       }
     } else if (currentView === "day") {
       const hours = [];

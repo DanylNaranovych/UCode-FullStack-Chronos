@@ -18,10 +18,12 @@
 }
 
 .eventWeek {
+  position: relative;
   text-align: left;
   color: white;
-  padding: 0px;
-  border-radius: 10px;
+  width: 100px;
+  padding: 2px 5px;
+  border-radius: 15px;
 }
 
 .eventHoliday {
@@ -34,17 +36,14 @@
 }
 
 .eventsContainer {
-  margin-top: -4.4vw;
-  position: relative;
+  position: absolute;
 }
 
 .eventText {
   transform: translateY(-50%);
+  font-size: 14px;
   left: 10px;
   right: 10px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .heading {
@@ -120,10 +119,21 @@
 }
 
 .hour {
+  font-weight: bold;
   height: 100px;
+  width: 190px;
   line-height: 50px;
   border-bottom: 1px solid #ccc;
   padding-left: 10px;
+}
+
+.hour:hover {
+  background-color: rgb(32, 29, 29);
+  cursor: pointer;
+}
+
+.time {
+  position: relative;
 }
 
 .today {
