@@ -373,9 +373,8 @@ const Calendar = ({ selectedCalendar, selectedCategories }) => {
         <div className={styles.oneDay}>
           <div className={styles.dayHeader}>
             {selectedDay.toLocaleDateString(undefined, {
-              weekday: "long",
               year: "numeric",
-              month: "long",
+              month: "numeric",
               day: "numeric",
             })}
           </div>

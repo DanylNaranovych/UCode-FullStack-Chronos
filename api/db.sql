@@ -1,6 +1,6 @@
 CREATE DATABASE IF NOT EXISTS chronos;
-CREATE USER IF NOT EXISTS 'dharin'@'localhost' IDENTIFIED BY 'securepass';
-GRANT ALL PRIVILEGES ON chronos.* TO 'dharin'@'localhost';
+CREATE USER IF NOT EXISTS 'ipustovyj'@'localhost' IDENTIFIED BY 'securepass';
+GRANT ALL PRIVILEGES ON chronos.* TO 'ipustovyj'@'localhost';
 
 USE chronos;
 

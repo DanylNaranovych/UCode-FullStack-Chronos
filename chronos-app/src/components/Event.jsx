@@ -4,6 +4,8 @@ import styles from "../styles/Event.module.css";
 import { useDispatch } from "react-redux";
 import { deleteEvent } from "../store/actions/event";
 
+import ShareForm from "./ShareForm";
+
 const Event = ({
   title,
   content,
@@ -17,6 +19,8 @@ const Event = ({
   onDelete,
 }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [isFormVisible, setIsFormVisible] = useState(false);
+
   const dispatch = useDispatch();
   const formatDate = (dateString) => {
     const options = {
@@ -38,6 +42,10 @@ const Event = ({
     await dispatch(deleteEvent(calendarId, eventId));
     setShowConfirmation(false);
     onClose();
+  };
+
+  const handleShareClick = () => {
+    setIsFormVisible(true);
   };
 
   return (
@@ -62,14 +70,23 @@ const Event = ({
             </div>
           </div>
           <div className={styles.buttonWrapper}>
-            <button onClick={onCancel} className={styles.cancelButton}>
-              Close
+            <button onClick={handleShareClick} className={styles.cancelButton}>
+              Share
             </button>
             <button onClick={handleDelete} className={styles.cancelButton}>
               Delete
             </button>
+            <button onClick={onCancel} className={styles.cancelButton}>
+              Close
+            </button>
           </div>
         </div>
+        {isFormVisible && (
+          <ShareForm
+            eventId={eventId}
+            onClose={() => setIsFormVisible(false)}
+          />
+        )}
       </div>
       {showConfirmation && (
         <div className={styles.confirmationModal}>

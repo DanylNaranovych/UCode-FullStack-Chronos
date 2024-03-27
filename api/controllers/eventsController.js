@@ -48,12 +48,12 @@ export default class eventsController {
       }
 
       const eventId = await eventsTable.create(
-          name,
-          content,
-          start,
-          end,
-          type,
-          color ? color : "#fff"
+        name,
+        content,
+        start,
+        end,
+        type,
+        color ? color : "#fff"
       );
 
       await eventsTable.saveCalendarEvent(eventId, calendarId);
@@ -138,8 +138,7 @@ export default class eventsController {
 
   static async deleteEvent(req, res) {
     try {
-      const {eventId} = req.params;
-      const {calendarId} = req.body;
+      const { eventId, calendarId } = req.params;
 
       const token = req.cookies.token;
       const { userId } = await TokenService.getData(token);
@@ -159,14 +158,12 @@ export default class eventsController {
     }
   }
 
-
   static async shareEvent(req, res) {
     try {
-      const {eventId, email} = req.body;
-
+      const { eventId, email } = req.body;
       const userTable = new User();
 
-      if(!await userTable.checkExists("email", email)) {
+      if (!(await userTable.checkExists("email", email))) {
         res.send("User don't exists!");
         return;
       }
@@ -174,7 +171,7 @@ export default class eventsController {
       const token = await TokenService.generate({ eventId });
 
       const transporter = nodemailer.createTransport(config.nodemailer);
-      const url = `http://127.0.0.1:8000/api/events/share/${token}`;
+      const url = `http://127.0.0.1:3000/api/events/share/${token}`;
       await transporter.sendMail({
         from: "raddzor.101@gmail.com",
         to: email,
@@ -195,7 +192,7 @@ export default class eventsController {
 
       const data = await TokenService.getData(token);
       if (!data || !data.eventId) {
-        res.send('The confirm token is invalid.');
+        res.send("The confirm token is invalid.");
         return;
       }
       const { eventId } = data;
@@ -210,11 +207,10 @@ export default class eventsController {
     }
   }
 
-
   static async kickUser(req, res) {
     try {
-      const {eventId} = req.params;
-      const {guestId, calendarId} = req.params;
+      const { eventId } = req.params;
+      const { guestId, calendarId } = req.params;
 
       const token = req.cookies.token;
       const { userId } = await TokenService.getData(token);
@@ -222,14 +218,16 @@ export default class eventsController {
       const calendarsTable = new Calendar();
       const eventsTable = new Event();
 
-      if (!(await calendarsTable.checkPermission(calendarId, userId))
-          || !(await eventsTable.checkPermission(calendarId, eventId))
-          || userId === guestId ) {
+      if (
+        !(await calendarsTable.checkPermission(calendarId, userId)) ||
+        !(await eventsTable.checkPermission(calendarId, eventId)) ||
+        userId === guestId
+      ) {
         res.status(403).send("Permission denied");
         return;
       }
 
-      await eventsTable.removeEventFromCalendar(calendarId, eventId);``
+      await eventsTable.removeEventFromCalendar(calendarId, eventId);
 
       res.status(204).send();
     } catch (err) {

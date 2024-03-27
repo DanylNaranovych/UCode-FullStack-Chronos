@@ -2,6 +2,7 @@ const initialState = {
   events: [],
   loading: false,
   error: null,
+  message: null,
 };
 
 const eventReducer = (state = initialState, action) => {

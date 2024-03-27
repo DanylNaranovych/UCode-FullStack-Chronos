@@ -1,8 +1,8 @@
 {
   "port": 8000,
-  "db" : {
+  "db": {
     "host": "localhost",
-    "user": "dharin",
+    "user": "ipustovyj",
     "database": "chronos",
     "password": "securepass"
   },

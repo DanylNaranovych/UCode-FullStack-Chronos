@@ -17,6 +17,12 @@
   margin-bottom: 2px;
 }
 
+.dayHeader {
+  text-align: center;
+  font-size: larger;
+  text-transform: uppercase;
+}
+
 .eventWeek {
   position: relative;
   z-index: 1;
@@ -106,7 +112,6 @@
 }
 
 .oneDay .eventWeek {
-  /* width: 100%; */
   margin-left: 50px;
 }
 
@@ -132,10 +137,6 @@
 .day {
   height: 100px;
   overflow: hidden;
-}
-
-.hours {
-  margin-top: 150px;
 }
 
 .hour {

@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "./store/actions/auth";
 import Cookies from "js-cookie";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import LoginForm from "./components/LoginForm";
 import Calendar from "./components/Calendar";
 import Sidebar from "./components/Sidebar";
+import ShareConfirmation from "./components/ShareConfirmation";
 import "./App.css";
 
 function App() {
@@ -47,26 +49,39 @@ function App() {
   }
 
   return (
-    <div className="App">
-      {isLoggedIn ? (
-        <div>
-          <Header />
-          <div className="Content">
-            <Sidebar
-              onLogout={handleLogout}
-              onSelectCalendar={handleCalendarSelect}
-              onSelectCategories={handleCategoriesSelect}
-            />
-            <Calendar
-              selectedCalendar={selectedCalendar}
-              selectedCategories={selectedCategories}
-            />
-          </div>
-        </div>
-      ) : (
-        <LoginForm onLoginSuccess={handleLoginSuccess} />
-      )}
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route
+            path="/api/events/share/:token"
+            element={<ShareConfirmation />}
+          />
+          <Route
+            path="/"
+            element={
+              isLoggedIn ? (
+                <div>
+                  <Header />
+                  <div className="Content">
+                    <Sidebar
+                      onLogout={handleLogout}
+                      onSelectCalendar={handleCalendarSelect}
+                      onSelectCategories={handleCategoriesSelect}
+                    />
+                    <Calendar
+                      selectedCalendar={selectedCalendar}
+                      selectedCategories={selectedCategories}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <LoginForm onLoginSuccess={handleLoginSuccess} />
+              )
+            }
+          />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

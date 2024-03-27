@@ -47,3 +47,21 @@ export const deleteEvent = (calendarId, eventId) => async (dispatch) => {
     });
   }
 };
+
+export const shareEvent = (eventId, email) => async (dispatch) => {
+  try {
+    const response = await EventService.shareEvent(eventId, email);
+    console.log(response);
+  } catch (error) {
+    console.error("Event share failed", error);
+  }
+};
+
+export const confirmEvent = (calendarId, token) => async (dispatch) => {
+  try {
+    const response = await EventService.confirmEvent(calendarId, token);
+    console.log(response);
+  } catch (error) {
+    console.error("Event share failed", error);
+  }
+};
