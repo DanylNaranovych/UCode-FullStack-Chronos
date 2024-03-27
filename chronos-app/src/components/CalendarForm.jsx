@@ -47,7 +47,7 @@ const CalendarForm = ({ onClose }) => {
           </div>
           <div className={styles.buttons}>
             <button type="submit" className={styles.submitButton}>
-              Create Event
+              Create Calendar
             </button>
             <button
               type="button"
