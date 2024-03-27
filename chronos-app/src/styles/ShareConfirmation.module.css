@@ -1,0 +1,53 @@
+.container {
+  background-color: #222;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.title {
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.selectInput {
+  background-color: #333;
+  color: white;
+  font-size: 16px;
+  border: 1px solid #555;
+  padding: 8px 12px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.submitButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.submitButton:hover {
+  background-color: #0056b3;
+}
+
+.successMessage {
+  color: #28a745;
+  font-size: 18px;
+  margin-top: 20px;
+}
