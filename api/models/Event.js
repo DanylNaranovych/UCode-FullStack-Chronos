@@ -25,9 +25,9 @@ export default class Event extends Model {
         return data[0][0];
     }
 
-    async checkPermission(calendarId, userId) {
-        const query = `SELECT role FROM userevents WHERE userId = ? AND eventId = ?; `;
-        const rows = await dbService.makeRequest(query, [calendarId, userId]);
+    async checkPermission(calendarId, eventId) {
+        const query = `SELECT role FROM calendarevents WHERE calendarId = ? AND eventId = ?; `;
+        const rows = await dbService.makeRequest(query, [calendarId, eventId]);
 
         return rows.length > 0 && rows[0].role === 'admin';
     }
@@ -40,4 +40,8 @@ export default class Event extends Model {
         return rows[0];
     }
 
+    async removeEventFromCalendar(calendarId, eventId) {
+        const query = `DELETE FROM calendarevents WHERE calendarId = ? AND eventId = ?; `;
+        await dbService.makeRequest(query, [calendarId, eventId]);
+    }
 }

@@ -3,6 +3,7 @@ import TokenService from "../utils/tokenService.js";
 import Calendar from "../models/Calendar.js";
 import nodemailer from "nodemailer";
 import config from "../config.json" assert { type: "json" };
+import User from "../models/User.js";
 
 export default class eventsController {
   static async getAllCalendarEvents(req, res) {
@@ -161,11 +162,14 @@ export default class eventsController {
 
   static async shareEvent(req, res) {
     try {
-      const {eventId, guestId, email} = req.body;
+      const {eventId, email} = req.body;
 
-      const eventsTable = new Event();
+      const userTable = new User();
 
-      // await eventsTable.saveUserEvent(eventId, guestId, "guest");
+      if(!await userTable.checkExists("email", email)) {
+        res.send("User don't exists!");
+        return;
+      }
 
       const token = await TokenService.generate({ eventId });
 
@@ -188,13 +192,12 @@ export default class eventsController {
     try {
       const { token } = req.params;
       const { calendarId } = req.body;
-      const data = await TokenService.getData(token);
 
+      const data = await TokenService.getData(token);
       if (!data || !data.eventId) {
         res.send('The confirm token is invalid.');
         return;
       }
-
       const { eventId } = data;
 
       const eventsTable = new Event();
@@ -207,4 +210,30 @@ export default class eventsController {
     }
   }
 
+
+  static async kickUser(req, res) {
+    try {
+      const {eventId} = req.params;
+      const {guestId, calendarId} = req.params;
+
+      const token = req.cookies.token;
+      const { userId } = await TokenService.getData(token);
+
+      const calendarsTable = new Calendar();
+      const eventsTable = new Event();
+
+      if (!(await calendarsTable.checkPermission(calendarId, userId))
+          || !(await eventsTable.checkPermission(calendarId, eventId))
+          || userId === guestId ) {
+        res.status(403).send("Permission denied");
+        return;
+      }
+
+      await eventsTable.removeEventFromCalendar(calendarId, eventId);``
+
+      res.status(204).send();
+    } catch (err) {
+      console.error(err);
+    }
+  }
 }
