@@ -41,7 +41,7 @@ export default class eventsController {
 
       const calendarsTable = new Calendar();
       const eventsTable = new Event();
-      console.log(await calendarsTable.checkPermission(calendarId, userId));
+
       if (!(await calendarsTable.checkPermission(calendarId, userId))) {
         res.status(403).send("Permission denied");
         return;
@@ -145,6 +145,7 @@ export default class eventsController {
 
       const calendarsTable = new Calendar();
       const eventsTable = new Event();
+
       if (!(await calendarsTable.checkPermission(calendarId, userId))) {
         res.status(403).send("Permission denied");
         return;
@@ -227,7 +228,6 @@ export default class eventsController {
       }
 
       await eventsTable.removeEventFromCalendar(calendarId, eventId);
-      ``;
 
       res.status(204).send();
     } catch (err) {
