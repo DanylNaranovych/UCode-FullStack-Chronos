@@ -45,20 +45,11 @@ CREATE TABLE IF NOT EXISTS userCalendars (
 CREATE TABLE IF NOT EXISTS calendarEvents (
                             calendarId INTEGER NOT NULL,
                             eventId INTEGER NOT NULL,
+                            role ENUM('admin', 'guest') NOT NULL,
 
                             PRIMARY KEY (calendarId, eventId),
                             FOREIGN KEY (eventId) REFERENCES events(id) ON DELETE CASCADE ON UPDATE CASCADE,
                             FOREIGN KEY (calendarId) REFERENCES calendars(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS userEvents (
-                            userId INTEGER NOT NULL,
-                            eventId INTEGER NOT NULL,
-                            role ENUM('admin', 'guest') NOT NULL,
-                            createdAt TIMESTAMP(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
-
-                            PRIMARY KEY (userId, eventId),
-                            FOREIGN KEY (eventId) REFERENCES events(id) ON DELETE CASCADE ON UPDATE CASCADE,
-                            FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
+ALTER TABLE calendarevents ADD role ENUM('admin', 'guest') NOT NULL;

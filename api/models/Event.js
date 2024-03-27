@@ -13,16 +13,9 @@ export default class Event extends Model {
         return res[0].insertId;
     }
 
-    async saveCalendarEvent(eventId, calendarId) {
-        const query = `INSERT INTO calendarevents(eventId, calendarId) VALUES(?, ?);`;
-        const res = await dbService.makeRequest(query, [eventId, calendarId]);
-
-        return res[0].insertId;
-    }
-
-    async saveUserEvent(eventId, userId, role) {
-        const query = `INSERT INTO userevents(eventId, userId, role) VALUES(?, ?, ?);`;
-        const res = await dbService.makeRequest(query, [eventId, userId, role]);
+    async saveCalendarEvent(eventId, calendarId, role = "admin") {
+        const query = `INSERT INTO calendarevents(eventId, calendarId, role) VALUES(?, ?, ?);`;
+        const res = await dbService.makeRequest(query, [eventId, calendarId, role]);
 
         return res[0].insertId;
     }
