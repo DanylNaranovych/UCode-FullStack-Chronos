@@ -113,12 +113,12 @@ export default class authController {
     try {
       const token = await TokenService.generate({ email: req.body.email });
       const transporter = nodemailer.createTransport(config.nodemailer);
-      const url = `http://127.0.0.1:8080/password-reset/${token}`;
+      const url = `http://127.0.0.1:8000/password-reset/${token}`;
       await transporter.sendMail({
         from: "raddzor.101@gmail.com",
         to: req.body.email,
         subject: "Confirm Password Reset",
-        html: `<a href="${url}">Please click on this text to confirm your password reset on forum.</a>`,
+        html: `<a href="${url}">Please click on this text to confirm your password reset.</a>`,
       });
       res.status(200).send("Success");
     } catch (err) {

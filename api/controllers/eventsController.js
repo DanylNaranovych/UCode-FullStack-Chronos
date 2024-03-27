@@ -1,6 +1,9 @@
 import Event from "../models/Event.js";
 import TokenService from "../utils/tokenService.js";
 import Calendar from "../models/Calendar.js";
+import nodemailer from "nodemailer";
+import config from "../config.json" assert { type: "json" };
+import User from "../models/User.js";
 
 export default class eventsController {
   static async getAllCalendarEvents(req, res) {
@@ -151,6 +154,84 @@ export default class eventsController {
 
       await eventsTable.delete(eventId);
       res.status(200).json({ msg: "Success" });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+
+  static async shareEvent(req, res) {
+    try {
+      const {eventId, email} = req.body;
+
+      const userTable = new User();
+
+      if(!await userTable.checkExists("email", email)) {
+        res.send("User don't exists!");
+        return;
+      }
+
+      const token = await TokenService.generate({ eventId });
+
+      const transporter = nodemailer.createTransport(config.nodemailer);
+      const url = `http://127.0.0.1:8000/api/events/share/${token}`;
+      await transporter.sendMail({
+        from: "raddzor.101@gmail.com",
+        to: email,
+        subject: "Invitation on event",
+        html: `<a href="${url}">Please click on this text to accept invitation on event.</a>`,
+      });
+
+      res.status(200).send();
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  static async confirmEvent(req, res) {
+    try {
+      const { token } = req.params;
+      const { calendarId } = req.body;
+
+      const data = await TokenService.getData(token);
+      if (!data || !data.eventId) {
+        res.send('The confirm token is invalid.');
+        return;
+      }
+      const { eventId } = data;
+
+      const eventsTable = new Event();
+
+      await eventsTable.saveCalendarEvent(eventId, calendarId, "guest");
+
+      res.status(204).send();
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+
+  static async kickUser(req, res) {
+    try {
+      const {eventId} = req.params;
+      const {guestId, calendarId} = req.params;
+
+      const token = req.cookies.token;
+      const { userId } = await TokenService.getData(token);
+
+      const calendarsTable = new Calendar();
+      const eventsTable = new Event();
+
+      if (!(await calendarsTable.checkPermission(calendarId, userId))
+          || !(await eventsTable.checkPermission(calendarId, eventId))
+          || userId === guestId ) {
+        res.status(403).send("Permission denied");
+        return;
+      }
+
+      await eventsTable.removeEventFromCalendar(calendarId, eventId);``
+
+      res.status(204).send();
     } catch (err) {
       console.error(err);
     }
