@@ -1,6 +1,8 @@
 import Event from "../models/Event.js";
 import TokenService from "../utils/tokenService.js";
 import Calendar from "../models/Calendar.js";
+import nodemailer from "nodemailer";
+import config from "../config.json";
 
 export default class eventsController {
   static async getAllCalendarEvents(req, res) {
@@ -155,4 +157,45 @@ export default class eventsController {
       console.error(err);
     }
   }
+
+
+  static async shareEvent(req, res) {
+    try {
+      const {eventId, guestId, email} = req.body;
+
+      const eventsTable = new Event();
+
+      await eventsTable.saveUserEvent(eventId, guestId, "guest");
+
+      const token = await TokenService.generate({ guestId, eventId });
+
+      const transporter = nodemailer.createTransport(config.nodemailer);
+      const url = `http://127.0.0.1:8000/api/events/share/${token}`;
+      await transporter.sendMail({
+        from: "raddzor.101@gmail.com",
+        to: email,
+        subject: "Invitation on event",
+        html: `<a href="${url}">Please click on this text to accept invitation on event.</a>`,
+      });
+
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  static async confirmEvent(req, res) {
+    try {
+      const { token } = req.params;
+      const data = await TokenService.getData(token);
+
+      if (!data || !data.eventId || !data.guestId) {
+        res.send('The confirm token is invalid.');
+      }
+
+      const { guestId, eventId } = data;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
 }
