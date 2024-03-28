@@ -24,15 +24,15 @@ To successfully run this project, ensure that the following dependencies are ins
 
 Follow these steps to set up and run the project:
 
-## Clone the repository: git clone [repository_link]
+1. Clone the repository: git clone [repository_link]
 
-## Navigate to the project directory: cd chronos-app
+2. Navigate to the project directory: cd chronos-app
 
-## Install dependencies: npm install
+3. Install dependencies: npm install
 
-## Start the development server: npm start
+4. Start the development server: npm start
 
-## Open your browser and visit http://127.0.0.1:3000 to view the calendar application.
+5. Open your browser and visit http://127.0.0.1:3000 to view the calendar application.
 
 # Full-Fledged Documentation
 
@@ -74,15 +74,15 @@ The user interface is built using React.js and Material-UI components to ensure 
 
 ## Usage Instructions
 
-### User Registration/Login: Users can sign up for an account or log in with existing credentials using the provided authentication form.
+1. User Registration/Login: Users can sign up for an account or log in with existing credentials using the provided authentication form.
 
-### Calendar Navigation: Navigate between different views (month, week, day) to visualize events within specific time frames.
+2. Calendar Navigation: Navigate between different views (month, week, day) to visualize events within specific time frames.
 
-### Event Management: Create new events by clicking on the desired date and filling out the event details form. Edit or delete existing events by selecting them from the calendar interface.
+3. Event Management: Create new events by clicking on the desired date and filling out the event details form. Edit or delete existing events by selecting them from the calendar interface.
 
-### Collaboration: Share calendars with other users and collaborate on event planning and scheduling.
+4. Collaboration: Share calendars with other users and collaborate on event planning and scheduling.
 
-### Settings: Access user settings to customize preferences, manage account information, and configure notification preferences.
+5. Settings: Access user settings to customize preferences, manage account information, and configure notification preferences.
 
 # Description of Progress
 
