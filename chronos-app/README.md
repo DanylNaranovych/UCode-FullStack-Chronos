@@ -1,70 +1,99 @@
-# Getting Started with Create React App
+# Short Description
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a multi-user calendar application designed to facilitate collaboration and organization among multiple users. It allows users to schedule events, manage appointments, and coordinate activities efficiently.
 
-## Available Scripts
+# Screenshots
 
-In the project directory, you can run:
+# Requirements and Dependencies
 
-### `npm start`
+To successfully run this project, ensure that the following dependencies are installed:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Node.js
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## npm (Node Package Manager)
 
-### `npm test`
+## React.js
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Firebase (for real-time database and authentication)
 
-### `npm run build`
+## Material-UI (for user interface components)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Any additional dependencies listed in the package.json file
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# How to Run
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Follow these steps to set up and run the project:
 
-### `npm run eject`
+## Clone the repository: git clone [repository_link]
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Navigate to the project directory: cd chronos-app
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Install dependencies: npm install
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Start the development server: npm start
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Open your browser and visit http://127.0.0.1:3000 to view the calendar application.
 
-## Learn More
+# Full-Fledged Documentation
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Project Structure
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The project follows a structured organization to maintain clarity and ease of navigation. Key directories include:
 
-### Code Splitting
+### src/components: Contains reusable React components for building the user interface.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### src/pages: Houses individual pages/routes of the application.
 
-### Analyzing the Bundle Size
+### src/firebase: Stores Firebase configuration and utility functions for authentication and database interactions.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### src/styles: Includes global styles and theme configurations for consistent styling across the application.
 
-### Making a Progressive Web App
+### public: Contains static assets such as images and favicon.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Implementation Details
 
-### Advanced Configuration
+### Authentication
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+The application utilizes Firebase Authentication for user authentication. Users can sign up with email/password or log in with existing credentials. Upon successful authentication, users gain access to calendar functionalities based on their permissions.
 
-### Deployment
+### Real-Time Database
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Firebase Realtime Database powers the backend of the application, enabling real-time synchronization of calendar events across multiple users. The database structure is designed to efficiently store and retrieve event data while maintaining data integrity and security.
 
-### `npm run build` fails to minify
+### User Interface
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The user interface is built using React.js and Material-UI components to ensure a responsive and visually appealing design. Features include:
+
+#### Calendar view with month, week, and day views.
+
+#### Event creation, editing, and deletion functionalities.
+
+#### User-friendly forms for input validation and error handling.
+
+#### Intuitive navigation and user feedback mechanisms.
+
+## Usage Instructions
+
+### User Registration/Login: Users can sign up for an account or log in with existing credentials using the provided authentication form.
+
+### Calendar Navigation: Navigate between different views (month, week, day) to visualize events within specific time frames.
+
+### Event Management: Create new events by clicking on the desired date and filling out the event details form. Edit or delete existing events by selecting them from the calendar interface.
+
+### Collaboration: Share calendars with other users and collaborate on event planning and scheduling.
+
+### Settings: Access user settings to customize preferences, manage account information, and configure notification preferences.
+
+# Description of Progress
+
+## Engage: Explored existing calendar applications, identified user needs, and outlined project goals.
+
+## Investigate: Researched technologies and frameworks suitable for building a multi-user calendar. Decided to use React.js for the front end and Firebase for the real-time database and authentication.
+
+## Act: Implemented user authentication, calendar view functionality, event creation, and editing features. Addressed challenges related to real-time data synchronization and user permissions.
+
+# Algorithm Description
+
+The calendar application utilizes algorithms to manage event scheduling, collision detection, and user notifications. It employs data structures such as arrays and objects to organize events and optimize calendar display. Additionally, algorithms for user authentication and authorization ensure secure access to calendar functionalities.
+
+By adhering to this documentation structure, users can easily understand and utilize the multi-user calendar application. It serves as a valuable resource for both individual reflection and collaborative development efforts.
