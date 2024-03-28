@@ -8,17 +8,17 @@ This project is a multi-user calendar application designed to facilitate collabo
 
 To successfully run this project, ensure that the following dependencies are installed:
 
-## Node.js
+- Node.js
 
-## npm (Node Package Manager)
+- npm (Node Package Manager)
 
-## React.js
+- React.js
 
-## Firebase (for real-time database and authentication)
+- Firebase (for real-time database and authentication)
 
-## Material-UI (for user interface components)
+- Material-UI (for user interface components)
 
-## Any additional dependencies listed in the package.json file
+- Any additional dependencies listed in the package.json file
 
 # How to Run
 
@@ -40,15 +40,15 @@ Follow these steps to set up and run the project:
 
 The project follows a structured organization to maintain clarity and ease of navigation. Key directories include:
 
-### src/components: Contains reusable React components for building the user interface.
+- src/components: Contains reusable React components for building the user interface.
 
-### src/pages: Houses individual pages/routes of the application.
+- src/pages: Houses individual pages/routes of the application.
 
-### src/firebase: Stores Firebase configuration and utility functions for authentication and database interactions.
+- src/firebase: Stores Firebase configuration and utility functions for authentication and database interactions.
 
-### src/styles: Includes global styles and theme configurations for consistent styling across the application.
+- src/styles: Includes global styles and theme configurations for consistent styling across the application.
 
-### public: Contains static assets such as images and favicon.
+- public: Contains static assets such as images and favicon.
 
 ## Implementation Details
 
@@ -64,13 +64,13 @@ Firebase Realtime Database powers the backend of the application, enabling real-
 
 The user interface is built using React.js and Material-UI components to ensure a responsive and visually appealing design. Features include:
 
-#### Calendar view with month, week, and day views.
+- Calendar view with month, week, and day views.
 
-#### Event creation, editing, and deletion functionalities.
+- Event creation, editing, and deletion functionalities.
 
-#### User-friendly forms for input validation and error handling.
+- User-friendly forms for input validation and error handling.
 
-#### Intuitive navigation and user feedback mechanisms.
+- Intuitive navigation and user feedback mechanisms.
 
 ## Usage Instructions
 
