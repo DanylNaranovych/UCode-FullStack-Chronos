@@ -323,7 +323,7 @@ const Calendar = ({ selectedCalendar, selectedCategories }) => {
                         } else {
                           positionInHour = (100 / 60) * minutesInHour - 50;
                         }
-                        const eventWidth = 100 / currentHourEvents.length;
+                        const eventWidth = 38 / currentHourEvents.length;
                         const eventHeight = eventDuration * 100;
                         return (
                           <div
@@ -332,7 +332,7 @@ const Calendar = ({ selectedCalendar, selectedCategories }) => {
                             style={{
                               top: `${positionInHour}px`,
                               height: `${eventHeight}px`,
-                              left: `${eventIndex * eventWidth}%`,
+                              left: `${eventIndex * eventWidth}px`,
                               backgroundColor: event.color,
                             }}
                             onClick={(e) => {

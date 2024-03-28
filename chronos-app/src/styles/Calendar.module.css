@@ -23,14 +23,28 @@
   text-transform: uppercase;
 }
 
-.eventWeek {
+.eventsContainer {
   position: relative;
+}
+
+.eventWeek {
+  position: absolute;
   z-index: 1;
   text-align: left;
   color: white;
   width: 100px;
-  padding: 2px 5px;
-  border-radius: 15px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  opacity: 1;
+}
+
+.eventWeek:hover {
+  z-index: 3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  opacity: 1;
 }
 
 .overlay {
@@ -50,10 +64,6 @@
   padding: 4px 8px;
   border-radius: 10px;
   margin-bottom: 2px;
-}
-
-.eventsContainer {
-  position: absolute;
 }
 
 .eventText {
@@ -140,6 +150,7 @@
 }
 
 .hour {
+  position: relative;
   font-weight: bold;
   height: 100px;
   width: 190px;
