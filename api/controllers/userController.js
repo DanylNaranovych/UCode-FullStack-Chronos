@@ -1,7 +1,7 @@
 import TokenService from "../utils/tokenService.js";
 import User from "../models/User.js";
 
-export default class eventsController {
+export default class usersController {
     static async updateUserPhoto(req, res) {
         try {
             const token = req.cookies.token;
@@ -17,7 +17,7 @@ export default class eventsController {
                 msg: "Success",
             });
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     }
 }

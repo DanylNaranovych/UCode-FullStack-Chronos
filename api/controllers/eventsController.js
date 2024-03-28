@@ -201,7 +201,7 @@ export default class eventsController {
 
       await eventsTable.saveCalendarEvent(eventId, calendarId, "guest");
 
-      res.status(204).send();
+      res.status(200).send();
     } catch (err) {
       console.error(err);
     }
@@ -229,7 +229,7 @@ export default class eventsController {
 
       await eventsTable.removeEventFromCalendar(calendarId, eventId);
 
-      res.status(204).send();
+      res.status(200).send();
     } catch (err) {
       console.error(err);
     }
